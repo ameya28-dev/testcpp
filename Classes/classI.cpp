@@ -35,10 +35,10 @@ Rectangle::Rectangle (int a, int b){
 
 // Rectangle::Rectangle (int a, int b) : width(a), height(b) {}
 
-class Circle{
+class Circle {
     double radius;
 
-public:
+    public:
     Circle(double r) {
         radius = r;
     }
@@ -52,6 +52,9 @@ public:
     }
 
 };
+
+
+
 
 class Cylinder{
     Circle base;

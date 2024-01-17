@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <algorithm>
 
 int fibonacci (int n){
     if(n < 0) {
@@ -35,6 +36,9 @@ int main(){
     std::cout << "Enter a number" << "\t";
     std::cin >> n;
 
+    int arr[5]; 
+
+
     try{
         // auto start = std::chrono::high_resolution_clock::now();
         // int* recursive_array = recursion(n);
@@ -46,6 +50,10 @@ int main(){
         auto stop = std::chrono::high_resolution_clock::now();
         std::cout << iterative_array[n-1] << '\n';
         std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count() << '\n';
+
+
+        int arr[5] = {};
+        std::cout << "Initialization: " << arr[1];
     }
     catch (std::string ex){
         std::cout << ex;
