@@ -132,12 +132,15 @@ Node *reverseLinkedListRecursively(Node *head)
     return newHead;
 }
 
-Node* reverseKNodes(Node* head, int k){
-    Node* currptr = head;
-    Node* prevptr = nullptr;
-    Node* nextptr; int count = 0;
+Node *reverseKNodes(Node *head, int k)
+{
+    Node *currptr = head;
+    Node *prevptr = nullptr;
+    Node *nextptr;
+    int count = 0;
 
-    while(currptr != nullptr && count < k){
+    while (currptr != nullptr && count < k)
+    {
         nextptr = currptr->next;
         currptr->next = prevptr;
         prevptr = currptr;
@@ -145,11 +148,69 @@ Node* reverseKNodes(Node* head, int k){
         count++;
     }
 
-    if(nextptr != nullptr){
+    if (nextptr != nullptr)
+    {
         head->next = reverseKNodes(nextptr, k);
     }
 
     return prevptr;
+}
+
+void makecycle(Node *&head, int pos)
+{
+    Node *temp = head;
+    Node *startcycleposition;
+
+    int count = 1;
+    while (temp->next != nullptr)
+    {
+        if (count == pos)
+        {
+            startcycleposition = temp;
+        }
+        temp = temp->next;
+        count++;
+    }
+    temp->next = startcycleposition;
+}
+
+bool detectcycle(Node *head)
+{
+    Node *fast = head, *slow = head;
+
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (fast == slow)
+            return true;
+    }
+
+    return false;
+}
+
+void removecycle(Node *&head)
+{
+    if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
+    {
+        return;
+    }
+
+    Node *fast = head->next->next, *slow = head->next;
+
+    while (fast != slow)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    fast = head;
+    while (fast->next != slow->next)
+    {
+        fast = fast->next;
+        slow = slow->next;
+    }
+    slow->next = nullptr;
 }
 
 int main()
@@ -174,15 +235,28 @@ int main()
     // reverseLinkedListIteratively(head);
     display(iterativelyreversed);
 
-
     std::cout << "Reversing Linked List recursively\n";
     Node *recursivelyreversed = reverseLinkedListRecursively(iterativelyreversed);
     display(recursivelyreversed);
     // display(head);
 
     std::cout << "Reversing k nodes of a Linked List\n";
-    Node * knodesreversed = reverseKNodes(recursivelyreversed, 4);
+    Node *knodesreversed = reverseKNodes(recursivelyreversed, 4);
     display(knodesreversed);
 
+    Node *cyclehead = nullptr;
+    insertNodeAtTail(cyclehead, 1);
+    insertNodeAtTail(cyclehead, 2);
+    insertNodeAtTail(cyclehead, 3);
+    insertNodeAtTail(cyclehead, 4);
+    insertNodeAtTail(cyclehead, 5);
+    display(cyclehead);
+    makecycle(cyclehead, 3);
+    // display(cyclehead);
+
+    std::cout << "Is there a cycle present?\t" << detectcycle(cyclehead) << '\n';
+    std::cout << "Linked List after removing cycle:\t";
+    removecycle(cyclehead);
+    display(cyclehead);
     return 0;
 }
