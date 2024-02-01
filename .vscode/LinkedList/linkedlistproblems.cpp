@@ -168,6 +168,23 @@ Node *mergeLinkedListsIteratively(Node *head1, Node *head2)
     return dummyhead->next;
 }
 
+Node* mergeLinkedListsRecursively(Node* head1, Node* head2){
+    if(head1 == nullptr) return head2;
+    if(head2 == nullptr) return head1;
+
+    Node* result;
+    if(head1->data < head2->data){
+        result = head1;
+        result->next = mergeLinkedListsRecursively(head1->next, head2);
+    }
+    else{
+        result = head2;
+        result->next = mergeLinkedListsRecursively(head1, head2->next);
+    }
+
+    return result;
+}
+
 int main()
 {
     std::cout << "Append last k nodes of a linked list to its start" << '\n';
@@ -208,6 +225,17 @@ int main()
     std::cout << "Sorted iteratively:\n";
     Node *iterativelyMerged = mergeLinkedListsIteratively(sortedhead1, sortedhead2);
     display(iterativelyMerged);
+  
+    Node* rsortedhead1 = nullptr;
+    Node* rsortedhead2 = nullptr;
+    for (int i = 0; i < sizeof(arr1) / sizeof(int); i++)
+        insertNodeAtTail(rsortedhead1, arr1[i]);
+    for (int i = 0; i < sizeof(arr2) / sizeof(int); i++)
+        insertNodeAtTail(rsortedhead2, arr2[i]);
+
+    std::cout << "Sorted recursively:\n";
+    Node *resursivelyMerged = mergeLinkedListsRecursively(rsortedhead1, rsortedhead2);
+    display(resursivelyMerged);
 
     return 0;
 }
