@@ -185,6 +185,28 @@ Node* mergeLinkedListsRecursively(Node* head1, Node* head2){
     return result;
 }
 
+void evenAfterOdd(Node* &head){
+    Node *odd = head;
+    if(head==nullptr || head->next == nullptr){
+        return;
+    }
+
+    Node *even = head->next;
+    Node *evenStart = head->next;
+
+    while(odd->next != nullptr && even->next !=nullptr){
+        odd->next = even->next;
+        odd = odd->next;
+        even->next = odd->next;
+        even = even->next;
+    }
+
+    odd->next = evenStart;
+    if(odd->next == nullptr){
+        even->next = nullptr;
+    }
+}
+
 int main()
 {
     std::cout << "Append last k nodes of a linked list to its start" << '\n';
@@ -236,6 +258,15 @@ int main()
     std::cout << "Sorted recursively:\n";
     Node *resursivelyMerged = mergeLinkedListsRecursively(rsortedhead1, rsortedhead2);
     display(resursivelyMerged);
+
+    std::cout << "Even After Odd: " << "\n";
+    Node* headeo = NULL;
+    int arreo[] = {1,2,3,4,5,6,7};
+    for(int i=0;i <7;i++) insertNodeAtTail(headeo,arreo[i]);
+    display(headeo);
+    evenAfterOdd(headeo);
+    display(headeo);
+    std::cout << "\n";
 
     return 0;
 }
