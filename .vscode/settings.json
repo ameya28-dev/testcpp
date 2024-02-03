@@ -1,5 +1,6 @@
 {
     "C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\gcc.exe",
+    "code-runner.runInTerminal": true,
     "files.associations": {
         "typeinfo": "cpp",
         "iosfwd": "cpp",

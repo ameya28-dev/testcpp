@@ -2,12 +2,11 @@
 #include <string>
 #include <vector>
 
-using std::cout, std::endl, std::string, std::vector, std::size_t, std::cin;
 
 int main(){
-    string x;
-    cout << "Enter your name:" << '\t';
-    cin >> x;
-    cout << '\n' << "Hello World!" << x << '\n';
+    std::string x;
+    std::cout << "Enter your name:" << '\t';
+    std::cin >> x;
+    std::cout << '\n' << "Hello World!" << x << '\n';
     return 0;
 }
