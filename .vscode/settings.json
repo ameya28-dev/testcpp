@@ -60,6 +60,7 @@
         "format": "cpp",
         "span": "cpp",
         "variant": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "unordered_set": "cpp"
     }
 }
