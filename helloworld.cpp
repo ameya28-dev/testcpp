@@ -4,7 +4,7 @@
 
 
 int main(){
-    std::string x;
+    stdstring x;
     std::cout << "Enter your name:" << '\t';
     std::cin >> x;
     std::cout << '\n' << "Hello World!" << x << '\n';
