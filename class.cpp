@@ -1,7 +1,9 @@
 #include <iostream>
 #include <array>
+#include <algorithm>
 
-class Person{
+class Person
+{
 public:
     std::string name;
 
@@ -56,6 +58,10 @@ int main()
 
     const int n = 10;
     std::array<int, n> array{};
+
+    const auto is_positive = [](const auto &x)
+    { return x > 0; };
+    std::find_if(array.cbegin(), array.cend(), is_positive);
 
     return 0;
 }

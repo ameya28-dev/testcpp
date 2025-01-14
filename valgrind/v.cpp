@@ -37,6 +37,7 @@ int main()
 
 	int *ptr = new int[5];
 	delete[] ptr;
+	ptr = nullptr;
 
 	createNode("mason", 15);
 	Node* n = createHeapNode("mason", 15);
