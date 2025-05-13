@@ -3,22 +3,18 @@
 
 #define n 100
 
-class Stack
-{
+class Stack {
     int arr[n];
     int top;
 
-public:
-    Stack()
-    {
+   public:
+    Stack() {
         arr[n] = {};
         top = -1;
     }
 
-    void push(int x)
-    {
-        if (top == n - 1)
-        {
+    void push(int x) {
+        if (top == n - 1) {
             std::cout << "Stack Overflow" << '\n';
             return;
         }
@@ -27,50 +23,41 @@ public:
         arr[top] = x;
     }
 
-    void pop()
-    {
-        if (top == -1)
-        {
+    void pop() {
+        if (top == -1) {
             std::cout << "Stack is empty\n";
             return;
         }
         top--;
     }
 
-    int Top()
-    {
-        if (top == -1)
-        {
+    int Top() {
+        if (top == -1) {
             std::cout << "No top element in the stack\n";
             return -1;
         }
         return arr[top];
     }
 
-    bool empty()
-    {
+    bool empty() {
         return top == -1;
     }
 };
 
-void reversesentence(std::string s)
-{
+void reversesentence(std::string s) {
     std::stack<std::string> st;
 
-    for (int i = 0; i < s.length(); i++)
-    {
+    for (int i = 0; i < s.length(); i++) {
         std::string word = "";
 
-        while (s[i] != ' ' && i < s.length())
-        {
+        while (s[i] != ' ' && i < s.length()) {
             word += s[i];
             i++;
         }
         st.push(word);
     }
 
-    while (!st.empty())
-    {
+    while (!st.empty()) {
         std::cout << st.top() << " ";
         st.pop();
     }
@@ -78,10 +65,8 @@ void reversesentence(std::string s)
     std::cout << '\n';
 }
 
-void insertAtBottom(std::stack<int> &st, int topElement)
-{
-    if (st.empty())
-    {
+void insertAtBottom(std::stack<int> &st, int topElement) {
+    if (st.empty()) {
         st.push(topElement);
         return;
     }
@@ -91,8 +76,7 @@ void insertAtBottom(std::stack<int> &st, int topElement)
     insertAtBottom(st, top);
 }
 
-void reverseStack(std::stack<int> st)
-{
+void reverseStack(std::stack<int> st) {
     if (st.empty())
         return;
 
@@ -102,8 +86,7 @@ void reverseStack(std::stack<int> st)
     insertAtBottom(st, element);
 }
 
-int main()
-{
+int main() {
     Stack st = Stack();
     std::cout << st.empty() << '\n';
     st.push(1);
@@ -126,8 +109,7 @@ int main()
     reversestack.push(4);
     reverseStack(reversestack);
 
-    while (!reversestack.empty())
-    {
+    while (!reversestack.empty()) {
         std::cout << reversestack.top() << '\t';
         reversestack.pop();
     }
