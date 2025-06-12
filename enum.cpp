@@ -39,6 +39,6 @@ int main() {
 
     Color x = Color::green;
     Color2 y = Color2::green;
-
+      
     return 0;
 }

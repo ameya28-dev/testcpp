@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#define LIST {8, 7, 5, 9, 0, 1, 3, 2, 6, 4, 10, 12, 11, 16, 14, 15, 20, 19, 18, 17, 21, 22, 16, 23, 24, 25}
+#define LIST {8, 7, 5, 9, 0, 1, 3, 2, 6, 4, 10, 12, 11, 16, 14, 15, 20, 19, 18, 17, 21, 22, 16, 23, 24, 25, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 36, 37, 38, 29, 40}
 
 std::ostream& operator<<(std::ostream& ostr, const std::forward_list<int>& list) {
     for (auto& i : list) ostr << i << '\t';
@@ -41,7 +41,23 @@ std::chrono::duration<double> test_vector() {
     return (end - start);
 }
 
+struct Timer {
+    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+    std::chrono::duration<double> duration;
+
+    Timer() {
+        start = std::chrono::high_resolution_clock::now();
+    }
+
+    ~Timer() {
+        end = std::chrono::high_resolution_clock::now();
+        duration = end - start;
+        std::cout << "Duration in micro seconds:\t" << duration.count() * 1000000 << std::endl;
+    }
+};
+
 int main() {
+    Timer timer;
     auto time1 = test_forward_list();
     auto time2 = test_vector();
     std::cout << "Duration for forward_list in micro seconds:\t" << time1.count() * 1000000 << std::endl;
