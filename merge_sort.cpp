@@ -1,15 +1,119 @@
+#include <algorithm>
+#include <iostream>
 #include <vector>
 
-void merge_sort(std::vector<int>::iterator& begin, std::vector<int>::iterator& end){
-    if(begin > end) return;
-
-    std::addressof(begin);
-    
-    // merge_sort(begin, begin + (end-begin)/2);
+void print_array(int* arr, int len) {
+    std::cout << "{";
+    for (int i = 0; i < len; i++) {
+        std::cout << arr[i];
+        if (i != len - 1) std::cout << ", ";
+    }
+    std::cout << "}\n";
 }
 
-int main(){
-    std::vector<int> v {10,9,3,5,60,1,56};
+void merge(int* arr, int start, int mid, int end) {
+    int left_length = mid - start + 1, right_length = end - mid;
+    int left[left_length];
+    int right[right_length];
+
+    for (int i = 0; i < (left_length); i++) {
+        left[i] = arr[start + i];
+    }
+    for (int i = 0; i < (right_length); i++) {
+        right[i] = arr[mid + 1 + i];
+    }
+
+    int i = 0, j = 0, k = start;
+
+    while (i < left_length && j < right_length) {
+        if (left[i] <= right[j]) {
+            arr[k] = left[i];
+            i++;
+        } else {
+            arr[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < left_length) {
+        arr[k] = left[i];
+        i++, k++;
+    }
+
+    while (j < right_length) {
+        arr[k] = right[j];
+        j++, k++;
+    }
+}
+
+void merge_sort(int* arr, int start, int end) {
+    if (start < end) {
+        int mid = start + (end - start) / 2;
+        merge_sort(arr, start, mid);
+        merge_sort(arr, mid + 1, end);
+        merge(arr, start, mid, end);
+    }
+}
+
+void merge(const std::vector<int>::iterator begin, const std::vector<int>::iterator mid, const std::vector<int>::iterator end) {
+    std::vector<int> left(mid - begin + 1);
+    std::vector<int> right(end - mid);
+
+    std::copy_n(begin, mid - begin + 1, left.begin());
+    std::copy_n(mid + 1, end - mid, right.begin());
+
+    auto i = left.begin(), j = right.begin(), k = begin;
+
+    while (i < left.end() && j < right.end()) {
+        if (*i < *j) {
+            *k = *i;
+            i++;
+        } else {
+            *k = *j;
+            j++;
+        }
+        k++;
+    }
+
+    if (i != left.end()) {
+        std::copy(i, left.end(), k);
+    }
+    if (j != right.end()) {
+        std::copy(j, right.end(), k);
+    }
+}
+
+void merge_sort(const std::vector<int>::iterator begin, const std::vector<int>::iterator end) {
+    if (end <= begin) return;
+    auto mid = begin + (end - begin) / 2;
+    merge_sort(begin, mid);
+    merge_sort(mid + 1, end);
+
+    merge(begin, mid, end);
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::vector<int>& vec) {
+    for (const int v : vec) {
+        stream << v << '\t';
+    }
+
+    return stream;
+}
+
+int main() {
+    int arr[] = {9, 14, 4, 6, 5, 8, 7};
+    int length = sizeof(arr) / sizeof(int);
+    print_array(arr, length);
+
+    merge_sort(arr, 0, length - 1);
+
+    print_array(arr, length);
+
+    std::vector<int> v{10, 6, 1, 7, 5, 2};
+    std::cout << v << std::endl;
+    merge_sort(v.begin(), v.end());
+    std::cout << v << std::endl;
 
     return 0;
 }
