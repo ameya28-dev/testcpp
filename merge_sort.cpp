@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <vector>
 
@@ -57,11 +58,13 @@ void merge_sort(int* arr, int start, int end) {
 }
 
 void merge(const std::vector<int>::iterator begin, const std::vector<int>::iterator mid, const std::vector<int>::iterator end) {
-    std::vector<int> left(mid - begin + 1);
-    std::vector<int> right(end - mid);
+    auto left_length = std::distance(begin, mid);
+    auto right_length = std::distance(mid, end);
+    std::vector<int> left(left_length);
+    std::vector<int> right(right_length);
 
-    std::copy_n(begin, mid - begin + 1, left.begin());
-    std::copy_n(mid + 1, end - mid, right.begin());
+    std::copy_n(begin, left_length, left.begin());
+    std::copy_n(mid, right_length, right.begin());
 
     auto i = left.begin(), j = right.begin(), k = begin;
 
@@ -85,12 +88,14 @@ void merge(const std::vector<int>::iterator begin, const std::vector<int>::itera
 }
 
 void merge_sort(const std::vector<int>::iterator begin, const std::vector<int>::iterator end) {
-    if (end <= begin) return;
-    auto mid = begin + (end - begin) / 2;
-    merge_sort(begin, mid);
-    merge_sort(mid + 1, end);
+    if (std::distance(begin, end) > 1) {
+        auto mid = begin + (std::distance(begin, end) / 2);
 
-    merge(begin, mid, end);
+        merge_sort(begin, mid);
+        merge_sort(mid, end);
+
+        merge(begin, mid, end);
+    }
 }
 
 std::ostream& operator<<(std::ostream& stream, const std::vector<int>& vec) {
@@ -99,6 +104,52 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<int>& vec) {
     }
 
     return stream;
+}
+
+struct Timer {
+    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+    std::chrono::duration<double> duration;
+
+    Timer() { start = std::chrono::high_resolution_clock::now(); }
+
+    void stop() {
+        end = std::chrono::high_resolution_clock::now();
+        duration = end - start;
+    }
+
+    double elapsed() {
+        return duration.count() * 1000;
+    }
+};
+
+std::vector<int> generate_vector() {
+    std::vector<int> v(1000);
+    std::generate(v.begin(), v.end(), [n = 1000]() mutable { return n--; });
+    return v;
+}
+
+double benchmark_stl_sort() {
+    auto v = generate_vector();
+    Timer timer;
+    std::sort(v.begin(), v.end());
+    timer.stop();
+    return timer.elapsed();
+}
+
+double benchmark_merge_sort() {
+    auto v = generate_vector();
+    Timer timer;
+    merge_sort(v.begin(), v.end());
+    timer.stop();
+    return timer.elapsed();
+}
+
+void benchmark_sorts() {
+    double ms = benchmark_merge_sort();
+
+    double ss = benchmark_stl_sort();
+
+    std::cout << "STL sort is faster than merge_sort by: " << ms / ss << std::endl;
 }
 
 int main() {
@@ -110,10 +161,11 @@ int main() {
 
     print_array(arr, length);
 
-    std::vector<int> v{10, 6, 1, 7, 5, 2};
+    std::vector<int> v{10, 6, 7, 5, 2, 1, 9, 4};
     std::cout << v << std::endl;
     merge_sort(v.begin(), v.end());
     std::cout << v << std::endl;
 
+    benchmark_sorts();
     return 0;
 }
