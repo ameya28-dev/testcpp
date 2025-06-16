@@ -1,7 +1,53 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <string>
 #include <vector>
+
+struct Timer {
+    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+    std::chrono::duration<double> duration;
+
+    Timer() { start = std::chrono::high_resolution_clock::now(); }
+
+    void stop() {
+        end = std::chrono::high_resolution_clock::now();
+        duration = end - start;
+    }
+
+    double elapsed() {
+        return duration.count() * 1000;
+    }
+};
+
+class Person {
+   public:
+    Person() = delete;
+    Person(const char* name_, int age_) : name(name_), age(age_) {};
+
+    const std::string& get_name() const { return name; }
+    const int get_age() const { return age; }
+
+   private:
+    std::string name;
+    int age;
+};
+
+std::ostream& operator<<(std::ostream& stream, const std::vector<int>& vec) {
+    for (const int v : vec) {
+        stream << v << '\t';
+    }
+
+    return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::vector<Person>& vec) {
+    for (auto& v : vec) {
+        stream << "Person{name: " << v.get_name() << ", age: " << v.get_age() << "}" << '\n';
+    }
+
+    return stream;
+}
 
 void print_array(int* arr, int len) {
     std::cout << "{";
@@ -98,30 +144,6 @@ void merge_sort(const std::vector<int>::iterator begin, const std::vector<int>::
     }
 }
 
-std::ostream& operator<<(std::ostream& stream, const std::vector<int>& vec) {
-    for (const int v : vec) {
-        stream << v << '\t';
-    }
-
-    return stream;
-}
-
-struct Timer {
-    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-    std::chrono::duration<double> duration;
-
-    Timer() { start = std::chrono::high_resolution_clock::now(); }
-
-    void stop() {
-        end = std::chrono::high_resolution_clock::now();
-        duration = end - start;
-    }
-
-    double elapsed() {
-        return duration.count() * 1000;
-    }
-};
-
 std::vector<int> generate_vector() {
     std::vector<int> v(1000);
     std::generate(v.begin(), v.end(), [n = 1000]() mutable { return n--; });
@@ -167,5 +189,28 @@ int main() {
     std::cout << v << std::endl;
 
     benchmark_sorts();
+
+    {
+        std::vector<Person> persons{Person("Ameya", 25), Person("Shreeya", 19), Person("Vignesh", 27)};
+
+        persons.emplace_back("Anish", 23);
+        persons.emplace_back("Aditi", 25);
+        persons.emplace_back("Ashwin", 18);
+
+        /// Sort by age
+        std::sort(persons.begin(), persons.end(), [](Person& a, Person& b) -> bool { return a.get_age() < b.get_age(); });
+
+        /// Sort by alphabetical order
+        std::sort(persons.begin(), persons.end(), [](Person& a, Person& b) { return a.get_name() < b.get_name(); });
+
+        /// Sort by age and then alphabetical order
+        std::sort(persons.begin(), persons.end(), [](Person& a, Person& b) {
+            if (a.get_age() != b.get_age()) return a.get_age() < b.get_age();
+            return a.get_name() < b.get_name();
+        });
+
+        std::cout << persons << std::endl;
+    }
+
     return 0;
 }
