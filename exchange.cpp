@@ -42,4 +42,9 @@ int main() {
     for (int a{0}, b{1}; a < 100; a = std::exchange(b, a + b)) {
         std::cout << a << ", ";
     }
+
+    std::cout << std::endl;
+    int a = 10, b = 20;
+    b = std::exchange(a, b);
+    std::cout << a << ", " << b << std::endl;
 }
