@@ -53,7 +53,7 @@ const std::unordered_map<int, std::string> createMap() {
     return map;
 }
 
-void display_variant(std::variant<std::string, int>& v) {
+void display_variant(const std::variant<std::string, int>& v) {
     if (const int* ptr = std::get_if<int>(&v)) {
         std::cout << "Saved as int:\t" << *ptr << '\n';
     } else {

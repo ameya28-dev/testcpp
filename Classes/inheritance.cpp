@@ -1,29 +1,39 @@
-#include <iostream>
-using namespace std;
+#include <string>
 
-class Polygon {
-    protected:
-        int width, height;
-    public:
-        void set_values (int a, int b){
-            width = a, height = b;
-        }
+class Person {
+   private:
+    std::string inner_thought;
+
+   protected:
+    double insurance_number;
+
+   public:
+    std::string name;
 };
 
-class Rectangle : public Polygon {
-    public:
-        int area (){
-            return width * height;
-        }
+class Wife : public Person {
+    void print() {
+        insurance_number;
+        name;
+    }
 };
 
-class Triangle : public Polygon {
-    public:
-        double area (){
-            return width * height * 0.5;
-        }
+class Child : protected Person {
+    void print() {
+        name;
+        insurance_number;
+    }
 };
 
-int main(){
-    return 0;
+class Collegue : private Person {
+    void print() {
+        name;
+        insurance_number;
+    }
+};
+
+int main() {
+    Person person;
+    Wife wife;
+    Child child;
 }
