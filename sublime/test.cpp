@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <optional>
 #include <utility>
+#include <numeric>
+#include <algorithm>
 
 struct complex {
 	double real, imag;
@@ -33,7 +35,6 @@ struct complex {
 	complex operator*(const complex& c) const {
 		return {real * c.real - imag * c.imag, real * c.imag  + imag * c.real};
 	}
-
 
 	complex inv() const {
 		return complex{real, imag * -1} / magnitude();
@@ -61,7 +62,7 @@ struct complex {
 	}
 
 	friend std::ostream& operator<<(std::ostream& stream, const complex& c) {
-		stream << "(" << c.real << " " << (c.imag > 0 ? "+ " : " ") << c.imag << "i)";
+		stream << "(" << c.real << " " << (c.imag > 0 ? "+ " : "- ") << std::abs(c.imag) << "i)";
 		return stream;
 	}
 };
@@ -92,7 +93,17 @@ std::ostream& operator<<(std::ostream& stream, const std::unordered_map<int, std
 	}
 
 	stream << "std::unordered_map<int, std::string>{{" << map.begin()->first << "," << std::quoted(map.begin()->second) << "}" ;
-	std::for_each(std::next(map.begin()), map.end(), [&stream](const auto & pair) {stream << ",{" << pair.first << "," << std::quoted(pair.second) << "}";});
+	std::for_each(std::next(map.begin()), map.end(), [&stream](const std::pair<int, std::string>& pair) {stream << ",{" << pair.first << "," << std::quoted(pair.second) << "}";});
+	return stream << "}";
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::unordered_map<int, int>& map) {
+	if (map.empty()) {
+		return stream << "std::unordered_map<int, int>{}";
+	}
+
+	stream << "std::unordered_map<int, int>{{" << map.begin()->first << "," << map.begin()->second << "}" ;
+	std::for_each(std::next(map.begin()), map.end(), [&stream](const std::pair<int, int>& pair) {stream << ",{" << pair.first << "," << pair.second << "}";});
 	return stream << "}";
 }
 
@@ -110,7 +121,7 @@ class CodeMap
 public:
 
 	static const std::optional<std::string> name_if(int code) {
-		const auto& res = map.find(code);
+		const std::unordered_map<int, std::string>::iterator& res = map.find(code);
 		if (res != map.end()) {
 			return res->second;
 		}
@@ -147,8 +158,11 @@ public:
 		return true;
 	}
 
-	static void print() {std::cout << map << std::endl;}
+	static bool contains(int code) {
+		return map.find(code) != map.end();
+	}
 
+	static void print() {std::cout << map << std::endl;}
 
 private:
 	static std::unordered_map<int, std::string> map;
@@ -156,6 +170,55 @@ private:
 };
 
 std::unordered_map<int, std::string> CodeMap::map  = {{1, "Hubli"}, {2, "Dharwad"}, {3, "Mumbai"}};
+
+std::unordered_map<int, int> two_sum(const std::vector<int>& v, int sum) {
+	std::unordered_map<int, int> res{};
+	std::unordered_map<int, int> map{};
+	for (int i = 0; i < v.size(); i++) {
+		if (map.find(sum - v[i]) == map.end()) {
+			map[v[i]] = i;
+		} else {
+			res[i] = map[sum - v[i]];
+		}
+	}
+	return res;
+}
+
+
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+ListNode* add_two_numbers(ListNode* l1, ListNode* l2) {
+	ListNode* head = nullptr;
+	ListNode* temp = head;
+	int carry = 0;
+
+	while (l1 != nullptr || l2 != nullptr || carry != 0) {
+		int first = l1 != nullptr ? l1->val : 0;
+		int second = l2 != nullptr ? l2->val : 0;
+
+		int sum  = first + second + carry;
+		carry = sum / 10;
+		ListNode* ptr = new ListNode(sum % 10);
+		if (head == nullptr) {
+			head = ptr;
+			temp = head;
+		} else {
+			temp->next = ptr;
+			temp = temp->next;
+		}
+
+		l1 = l1 != nullptr ? l1->next : nullptr;
+		l2 = l2 != nullptr ? l2->next : nullptr;
+	}
+
+	return head;
+}
 
 int main()
 {
@@ -205,7 +268,7 @@ int main()
 	std::cout << vec << std::endl;
 
 	std::cout << CodeMap::name(1) << std::endl;
-	std::cout << CodeMap::name_if(4).value_or("") << std::endl;
+	std::cout << CodeMap::name_if(4).value_or("Not found") << std::endl;
 
 	CodeMap::print();
 
@@ -213,7 +276,7 @@ int main()
 	CodeMap::insert_if({4, "Bangalore"});
 
 	CodeMap::print();
-	
+
 	CodeMap::update_if({5, "Bangalore"});
 	CodeMap::update_if({1, "Chennai"});
 
@@ -223,6 +286,23 @@ int main()
 	CodeMap::delete_if(0);
 
 	CodeMap::print();
+
+	std::sort(v1.begin(), v1.end());
+	std::cout << v1 << std::endl;
+
+	std::vector<int> nums {3, 3, 2, 5, 6, 4, 3};
+	std::cout << two_sum(nums, 6) << std::endl;
+
+	std::vector<int> gen(5);
+	std::iota(gen.begin(), gen.end(), 1);
+	std::cout << gen << std::endl;
+
+	std::generate(gen.begin(), gen.end(), [n = 1]() mutable {return pow(n++, 2);});
+	std::cout << gen << std::endl;
+
+	std::vector<int> filtered {};
+	std::copy_if(gen.begin(), gen.end(), std::back_inserter(filtered), [](int x) {return CodeMap::contains(x);});
+	std::cout << filtered << std::endl;
 
 	return 0;
 }
