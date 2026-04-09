@@ -26,13 +26,9 @@ class LinkedList {
    public:
     LinkedList() : head(nullptr), last(nullptr), length(0) {}
 
-    LinkedList(const T& data) {
-        create_head(data);
-    }
+    LinkedList(const T& data) { create_head(data); }
 
-    ~LinkedList() {
-        clear();
-    }
+    ~LinkedList() { clear(); }
 
     void insert_back(const T& data) {
         if (head == nullptr) {
@@ -74,7 +70,8 @@ class LinkedList {
         return false;
     }
 
-    friend std::ostream& operator<<(std::ostream& instream, const LinkedList<T>& ll) {
+    friend std::ostream& operator<<(std::ostream& instream,
+                                    const LinkedList<T>& ll) {
         instream << "linked list: ";
         auto temp = ll.head;
         while (temp) {
@@ -169,26 +166,29 @@ class LinkedList {
 
 int main() {
     LinkedList<int> l;
+    try {
+        l.insert_back(1);
+        l.remove(1);
+        l.insert_back(2);
+        l.insert_back(3);
+        l.remove(2);
+        l.insert_front(0);
+        l.insert_back(4);
+        l.remove(4);
+        // l.insert_front(6);
+        l.insert_back(7);
+        l.remove(0);
+        l.insert_back(8);
+        l.insert_front(5);
+        l.clear();
+        l.insert_back(11);
 
-    l.insert_back(1);
-    l.remove(1);
-    l.insert_back(2);
-    l.insert_back(3);
-    l.remove(2);
-    l.insert_front(0);
-    l.insert_back(4);
-    l.remove(4);
-    // l.insert_front(6);
-    l.insert_back(7);
-    l.remove(0);
-    l.insert_back(8);
-    l.insert_front(5);
-    l.clear();
-    l.insert_back(11);
-
-    std::cout << std::boolalpha;
-    std::cout << l << std::endl;
-    std::cout << "Size: " << l.size() << std::endl;
-    std::cout << "l contains 10: " << l.contains(10) << '\n';
-    std::cout << "l contains 1: " << l.contains(1) << '\n';
+        std::cout << std::boolalpha;
+        std::cout << l << std::endl;
+        std::cout << "Size: " << l.size() << std::endl;
+        std::cout << "l contains 10: " << l.contains(10) << '\n';
+        std::cout << "l contains 1: " << l.contains(1) << '\n';
+    } catch (...) {
+        std::cout << "Exception occured!\n";
+    }
 }

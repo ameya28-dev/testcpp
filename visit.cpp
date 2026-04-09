@@ -7,9 +7,11 @@
 struct Circle {
     double radius;
 };
+
 struct Rectangle {
     double width, height;
 };
+
 struct Square {
     double side;
 };
@@ -21,20 +23,21 @@ struct Triangle {
 using Shape = std::variant<Circle, Rectangle, Square, Triangle>;
 
 template <class... Ts>
-struct overloaded : Ts... {
+struct Overloaded : Ts... {
     using Ts::operator()...;
 };
+
 template <class... Ts>
-overloaded(Ts...) -> overloaded<Ts...>;
+Overloaded(Ts...) -> Overloaded<Ts...>;
 
 double area(const Shape& shape) {
-    return std::visit(
-        overloaded{
-            [](const Circle& c) { return M_PI * c.radius * c.radius; },
-            [](const Rectangle& r) { return r.width * r.height; },
-            [](const Square& s) { return s.side * s.side; },
-            [](const Triangle& t) { return 0.5 * t.base * t.height; }},
-        shape);
+    auto measureArea = Overloaded{
+        [](const Circle& c) { return M_PI * c.radius * c.radius; },
+        [](const Rectangle& r) { return r.width * r.height; },
+        [](const Square& s) { return s.side * s.side; },
+        [](const Triangle& t) { return 0.5 * t.base * t.height; },
+    };
+    return std::visit(measureArea, shape);
 }
 
 int main() {

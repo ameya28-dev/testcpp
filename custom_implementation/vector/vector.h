@@ -61,19 +61,22 @@ class VectorIterator {
 template <typename T>
 class Vector {
    public:
-    using ValueType = T;
-    using Iterator = VectorIterator<Vector<T>>;
-
-   public:
     Vector();
+
     ~Vector();
+
     void PushBack(const T&);
+
     void PushBack(T&&);
+
     void PopBack();
+
     void Clear();
+
     Iterator begin() {
         return Iterator(m_data);
     }
+
     Iterator end() {
         return Iterator(m_data + m_size);
     }
@@ -82,14 +85,21 @@ class Vector {
     T& EmplaceBack(Args&&... args);
 
     size_t GetSize() const;
+
     T& operator[](size_t);
+
     const T& operator[](size_t) const;
 
+   public:
+    using ValueType = T;
+    using Iterator = VectorIterator<Vector<T>>;
+
    private:
+    void _realloc(size_t);
+
     T* m_data = nullptr;
     size_t m_size = 0;
     size_t m_capacity = 0;
-    void _realloc(size_t);
 };
 
 template <typename T>

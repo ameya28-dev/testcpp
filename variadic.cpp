@@ -70,32 +70,33 @@ template <class... A>
 int func2(A... args) {
     int size = sizeof...(A);
     switch (size) {
-        case 0:
-            func1(99, 99, 99, 99, 99, 99);
-            break;
-        case 1:
-            func1(99, 99, args..., 99, 99, 99);
-            break;
-        case 2:
-            func1(99, 99, args..., 99, 99);
-            break;
-        case 3:
-            func1(args..., 99, 99, 99);
-            break;
-        case 4:
-            func1(99, args..., 99);
-            break;
-        case 5:
-            func1(99, args...);
-            break;
-        case 6:
-            func1(args...);
-            break;
-        default:
-            func1(0, 0, 0, 0, 0, 0);
+    case 0:
+        func1(99, 99, 99, 99, 99, 99);
+        break;
+    case 1:
+        func1(99, 99, args..., 99, 99, 99);
+        break;
+    case 2:
+        func1(99, 99, args..., 99, 99);
+        break;
+    case 3:
+        func1(args..., 99, 99, 99);
+        break;
+    case 4:
+        func1(99, args..., 99);
+        break;
+    case 5:
+        func1(99, args...);
+        break;
+    case 6:
+        func1(args...);
+        break;
+    default:
+        func1(0, 0, 0, 0, 0, 0);
     }
     return size;
 }
+
 ///
 
 template <typename... A>
@@ -115,7 +116,7 @@ int main() {
     func(1, 2, 3, 45);
     func("Hey");
 
-    func_trailing(1, 2, 3, 5, 6);  /// A => empty, B => {3,5,6}
+    func_trailing(1, 2, 3, 5, 6); /// A => empty, B => {3,5,6}
     func_trailing<int, std::string, int>(1, {1, 2}, 2, 4, 5, 6);
 
     func2(1, 2, 3, 4, 5);

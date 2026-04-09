@@ -1,16 +1,6 @@
 #include <iostream>
 
-#include "array.h"
 #include "vector.h"
-
-template <size_t S>
-std::ostream& operator<<(std::ostream& stream, const Array<int, S>& arr) {
-    for (int i = 0; i < S; i++) {
-        stream << arr[i] << '\t';
-    }
-    stream << std::endl;
-    return stream;
-}
 
 template <typename T>
 void PrintVector(const Vector<T>& vec) {
@@ -68,11 +58,6 @@ void PrintVector(const Vector<Coordinate>& vec) {
 }
 
 int main() {
-    Array<int, 5> arr;
-    arr[4] = 7;
-    std::cout << arr.getSize() << std::endl;
-    std::cout << arr;
-
     Vector<std::string> vec;
     vec.EmplaceBack("Ameya");
     vec.EmplaceBack("is");

@@ -30,9 +30,8 @@ std::ostream& operator<<(std::ostream& out, const std::vector<int>& vec) {
         return out << "{}";
     }
     out << "std::vector<int>{ " << *vec.begin();
-    std::for_each(std::next(vec.begin()), vec.end(), [&out](const int& element) {
-        out << ", " << element;
-    });
+    std::for_each(std::next(vec.begin()), vec.end(),
+                  [&out](const int& element) { out << ", " << element; });
     return out << " }";
 }
 
