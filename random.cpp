@@ -4,23 +4,21 @@
 #include <string>
 #include <variant>
 
-enum class Color { red,
-                   green,
-                   yellow };
+enum class Color { red, green, yellow };
 
 std::ostream& operator<<(std::ostream& instream, const Color& color) {
     switch (color) {
-        case Color::red:
-            instream << "red";
-            break;
-        case Color::yellow:
-            instream << "yellow";
-            break;
-        case Color::green:
-            instream << "green";
-            break;
-        default:
-            instream << "";
+    case Color::red:
+        instream << "red";
+        break;
+    case Color::yellow:
+        instream << "yellow";
+        break;
+    case Color::green:
+        instream << "green";
+        break;
+    default:
+        instream << "";
     }
     return instream;
 }
@@ -45,9 +43,15 @@ std::variant<int, std::string, Color> get_random() {
         return ss.str();
     }
 
-    if (random_number == 7) return Color::red;
-    if (random_number == 8) return Color::yellow;
-    if (random_number == 9) return Color::green;
+    if (random_number == 7) {
+        return Color::red;
+    }
+    if (random_number == 8) {
+        return Color::yellow;
+    }
+    if (random_number == 9) {
+        return Color::green;
+    }
 
     return "";
 }

@@ -1,26 +1,22 @@
-#include <iostream>
-#include <array>
 #include <algorithm>
+#include <array>
+#include <iostream>
 
-class Person
-{
+class Person {
 public:
     std::string name;
 
-    Person(std::string name)
-    {
+    Person(std::string name) {
         // std::cout << name << '\n';
         // std::cout << this->name << '\n';
         this->name = name;
     }
 
-    void assignNewName(std::string name)
-    {
+    void assignNewName(std::string name) {
         this->name = name;
     }
 
-    double areaOfCircle(double radius)
-    {
+    double areaOfCircle(double radius) {
         return this->pi * radius * radius;
     }
 
@@ -28,22 +24,19 @@ private:
     const double pi = 3.14;
 };
 
-void assignNewName(Person person)
-{
+void assignNewName(Person person) {
     person.name = "Ameya";
     std::cout << "Inside function: \t" << person.name << '\n';
 }
 
-void assignNewName(Person *person)
-{
+void assignNewName(Person* person) {
     person->name = "Ashwin";
 }
 
-int main()
-{
+int main() {
     Person person = Person("Shreeya");
-    Person *p = &person;
-    p->name = "Vighnesh";
+    Person* p     = &person;
+    p->name       = "Vighnesh";
     std::cout << "Inside main: \t" << person.name << '\n';
     assignNewName(person);
     std::cout << "Inside main: \t" << person.name << '\n';
@@ -59,8 +52,7 @@ int main()
     const int n = 10;
     std::array<int, n> array{};
 
-    const auto is_positive = [](const auto &x)
-    { return x > 0; };
+    const auto is_positive = [](const auto& x) { return x > 0; };
     std::find_if(array.cbegin(), array.cend(), is_positive);
 
     return 0;

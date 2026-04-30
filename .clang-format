@@ -16,19 +16,19 @@ ColumnLimit: 120
 SeparateDefinitionBlocks: Always
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '^<yvals(_core)?\.h>$'
+  - Regex: "^<yvals(_core)?\\.h>$"
     Priority: 1
-  - Regex: '^<(Windows|userenv)\.h>$'
+  - Regex: "^<(Windows|userenv)\\.h>$"
     Priority: 3
     SortPriority: 3
-  - Regex: '^<WinIoCtl\.h>$'
+  - Regex: "^<WinIoCtl\\.h>$"
     Priority: 3
     SortPriority: 4
-  - Regex: '^<__.*\.hpp>$'
+  - Regex: "^<__.*\\.hpp>$"
     Priority: 2
-  - Regex: '\.hpp[>"]$'
+  - Regex: "\\.hpp[>\"]$"
     Priority: 5
-  - Regex: '.*'
+  - Regex: ".*"
     Priority: 2
 IndentCaseBlocks: true
 IndentWidth: 4

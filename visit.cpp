@@ -1,6 +1,3 @@
-#define _USE_MATH_DEFINES
-
-#include <cmath>
 #include <iostream>
 #include <variant>
 
@@ -32,7 +29,7 @@ Overloaded(Ts...) -> Overloaded<Ts...>;
 
 double area(const Shape& shape) {
     auto measureArea = Overloaded{
-        [](const Circle& c) { return M_PI * c.radius * c.radius; },
+        [](const Circle& c) { return 3.14159 * c.radius * c.radius; },
         [](const Rectangle& r) { return r.width * r.height; },
         [](const Square& s) { return s.side * s.side; },
         [](const Triangle& t) { return 0.5 * t.base * t.height; },

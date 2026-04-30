@@ -2,8 +2,7 @@
 #include <string>
 #include <vector>
 
-
-int main(){
+int main() {
     stdstring x;
     std::cout << "Enter your name:" << '\t';
     std::cin >> x;

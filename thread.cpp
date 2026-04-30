@@ -18,5 +18,5 @@ int main() {
     std::cin.get();
     is_finished = true;
 
-    worker.join();
+    // worker.join();
 }

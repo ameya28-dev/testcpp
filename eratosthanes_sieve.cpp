@@ -15,7 +15,7 @@ Timer::Timer() {
 }
 
 Timer::~Timer() {
-    end = std::chrono::high_resolution_clock::now();
+    end      = std::chrono::high_resolution_clock::now();
     duration = end - start;
 
     std::cout << "Timer took " << duration.count() * 1000.0 << "ms" << std::endl;
@@ -40,7 +40,9 @@ std::vector<int> primes(const size_t n) {
     }
 
     for (size_t i = 2; i < n; i++) {
-        if (sieve[i]) res.emplace_back(i);
+        if (sieve[i]) {
+            res.emplace_back(i);
+        }
     }
 
     return res;
@@ -56,12 +58,12 @@ void print(const std::vector<int>& vec) {
 float pi(int n) {
     Timer t;
     float sum = 0;
-    int sign = 1;
+    int sign  = 1;
     // printf("sum: %f\t", sum);
     // printf("sign: %d\n", sign);
 
     for (int i = 1; i < 2 * n; i = i + 2) {
-        sum = sum + (4.0 / i) * sign;
+        sum  = sum + (4.0 / i) * sign;
         sign = sign * -1;
         // printf("sum: %f\t", sum);
         // printf("sign: %d\n", sign);

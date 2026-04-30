@@ -11,7 +11,9 @@ concept Addable = requires(T a, T b) {
     { a + b } -> std::convertible_to<T>;
 };
 
-auto add(Addable auto a, Addable auto b) -> Addable auto { return (a + b); }
+auto add(Addable auto a, Addable auto b) -> Addable auto {
+    return (a + b);
+}
 
 template <Addable T, Addable... Args>
 auto add(T first, Args... args) -> T {

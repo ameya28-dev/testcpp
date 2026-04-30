@@ -33,6 +33,31 @@ struct IntWrapper {
     int i;
 };
 
+struct CharInt {
+    char c;
+    int i;
+};
+
+struct IntChar {
+    int i;
+    char c;
+};
+
+union IntOrChar {
+    char c;
+    int i;
+};
+
+template <typename T>
+void printSizeOf(const char* type) {
+    std::cout << "Size of " << type << ": " << sizeof(T) << "\n";
+}
+
+template <typename T>
+void printAligmentOf(const char* type) {
+    std::cout << "Alignment of " << type << ": " << std::alignment_of_v<T> << "\n";
+}
+
 int main() {
     std::cout << "Size of char: " << sizeof(char) << "\n";
     std::cout << "Size of int: " << sizeof(int) << "\n";
@@ -48,45 +73,47 @@ int main() {
     std::cout << "Alignment of float: " << std::alignment_of_v<float> << "\n";
     std::cout << "Alignment of double: " << std::alignment_of_v<double> << "\n";
     std::cout << "Alignment of size_t: " << std::alignment_of_v<size_t> << "\n";
-    std::cout << "Alignment of std::string: "
-              << std::alignment_of_v<std::string> << "\n"
+    std::cout << "Alignment of std::string: " << std::alignment_of_v<std::string> << "\n"
               << "\n";
 
-    std::cout << "Size of std::vector<char>: " << sizeof(std::vector<char>)
-              << "\n";
-    std::cout << "Size of std::vector<int>: " << sizeof(std::vector<int>)
-              << "\n";
-    std::cout << "Size of std::vector<float>: " << sizeof(std::vector<float>)
-              << "\n";
-    std::cout << "Size of std::vector<double>: " << sizeof(std::vector<double>)
-              << "\n";
-    std::cout << "Size of std::vector<std::string>: "
-              << sizeof(std::vector<std::string>) << "\n\n";
+    std::cout << "Size of std::vector<char>: " << sizeof(std::vector<char>) << "\n";
+    std::cout << "Size of std::vector<int>: " << sizeof(std::vector<int>) << "\n";
+    std::cout << "Size of std::vector<float>: " << sizeof(std::vector<float>) << "\n";
+    std::cout << "Size of std::vector<double>: " << sizeof(std::vector<double>) << "\n";
+    std::cout << "Size of std::vector<std::string>: " << sizeof(std::vector<std::string>) << "\n\n";
 
-    std::cout << "Alignment of std::vector<char>: "
-              << std::alignment_of_v<std::vector<char>> << "\n";
-    std::cout << "Alignment of std::vector<int>: "
-              << std::alignment_of_v<std::vector<int>> << "\n";
-    std::cout << "Alignment of std::vector<float>: "
-              << std::alignment_of_v<std::vector<float>> << "\n";
-    std::cout << "Alignment of std::vector<double>: "
-              << std::alignment_of_v<std::vector<double>> << "\n";
-    std::cout << "Alignment of std::vector<std::string>: "
-              << std::alignment_of_v<std::vector<std::string>> << "\n\n";
+    std::cout << "Alignment of std::vector<char>: " << std::alignment_of_v<std::vector<char>> << "\n";
+    std::cout << "Alignment of std::vector<int>: " << std::alignment_of_v<std::vector<int>> << "\n";
+    std::cout << "Alignment of std::vector<float>: " << std::alignment_of_v<std::vector<float>> << "\n";
+    std::cout << "Alignment of std::vector<double>: " << std::alignment_of_v<std::vector<double>> << "\n";
+    std::cout << "Alignment of std::vector<std::string>: " << std::alignment_of_v<std::vector<std::string>> << "\n\n";
 
     std::cout << "Size of Coordinate: " << sizeof(Coordinate) << "\n\n";
-    std::cout << "Alignment of Coordinate: "
-              << std::alignment_of_v<Coordinate> << "\n\n";
+    std::cout << "Alignment of Coordinate: " << std::alignment_of_v<Coordinate> << "\n\n";
 
     std::cout << "Size of IntWrapper: " << sizeof(IntWrapper) << "\n";
     std::cout << "Size of Weather: " << sizeof(Weather) << "\n";
     std::cout << "Offset of main: " << offsetof(Weather, main) << "\n";
-    std::cout << "Offset of description: " << offsetof(Weather, description)
-              << "\n";
+    std::cout << "Offset of description: " << offsetof(Weather, description) << "\n";
     std::cout << "Offset of icon: " << offsetof(Weather, icon) << "\n";
     std::cout << "Offset of id: " << offsetof(Weather, id) << "\n\n";
 
     std::cout << "Size of Main: " << sizeof(Main) << "\n";
     std::cout << "Size of WeatherData: " << sizeof(WeatherData) << "\n";
-    std::cout << "Size of WeatherError: " << sizeof(WeatherError) << "\n";
+    std::cout << "Size of WeatherError: " << sizeof(WeatherError) << "\n\n\n";
+
+    printSizeOf<CharInt>("CharInt");
+    printAligmentOf<CharInt>("CharInt");
+    std::cout << "Offset of c in CharInt: " << offsetof(CharInt, c) << '\n';
+    std::cout << "Offset of i in CharInt: " << offsetof(CharInt, i) << "\n\n";
+
+    printSizeOf<IntChar>("IntChar");
+    printAligmentOf<IntChar>("IntChar");
+    std::cout << "Offset of c in IntChar: " << offsetof(IntChar, c) << '\n';
+    std::cout << "Offset of i in IntChar: " << offsetof(IntChar, i) << "\n\n";
+
+    printSizeOf<IntOrChar>("IntOrChar");
+    printAligmentOf<IntOrChar>("IntOrChar");
+    std::cout << "Offset of c in IntOrChar: " << offsetof(IntOrChar, c) << '\n';
+    std::cout << "Offset of i in IntOrChar: " << offsetof(IntOrChar, i) << "\n\n";
 }

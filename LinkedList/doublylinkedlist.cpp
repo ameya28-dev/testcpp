@@ -1,99 +1,93 @@
 #include <iostream>
 
-class Node
-{
+class Node {
 public:
     int data;
     Node *prev, *next;
 
-    Node(int val)
-    {
+    Node(int val) {
         this->data = val;
         this->prev = nullptr;
         this->next = nullptr;
     }
 };
 
-void insertNodeAtHead(Node *&head, int val)
-{
-    Node *newnode = new Node(val);
+void insertNodeAtHead(Node*& head, int val) {
+    Node* newnode = new Node(val);
     newnode->next = head;
-    if (head != nullptr)
+    if (head != nullptr) {
         head->prev = nullptr;
+    }
     head = newnode;
 }
 
-void insertNodeAtTail(Node *&head, int val)
-{
-    if (head == nullptr)
-    {
+void insertNodeAtTail(Node*& head, int val) {
+    if (head == nullptr) {
         insertNodeAtHead(head, val);
         return;
     }
 
-    Node *newnode = new Node(val);
-    Node *temp = head;
+    Node* newnode = new Node(val);
+    Node* temp    = head;
 
-    while (temp->next != nullptr)
-    {
+    while (temp->next != nullptr) {
         temp = temp->next;
     }
 
-    temp->next = newnode;
+    temp->next    = newnode;
     newnode->prev = temp;
 }
 
-void display(Node *head)
-{
-    Node *temp = head;
-    while (temp != nullptr)
-    {
+void display(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
         std::cout << temp->data << "->";
         temp = temp->next;
     }
     std::cout << "NULL" << '\n';
 }
 
-void deleteAtHead(Node *&head)
-{
-    if (head == nullptr)
+void deleteAtHead(Node*& head) {
+    if (head == nullptr) {
         return;
+    }
 
-    Node *temp = head;
-    head = head->next;
+    Node* temp = head;
+    head       = head->next;
     head->prev = nullptr;
     delete temp;
 }
 
-void deleteNode(Node *&head, int pos)
-{
-    if (head == nullptr)
+void deleteNode(Node*& head, int pos) {
+    if (head == nullptr) {
         return;
+    }
 
-    if (pos == 1)
-    {
+    if (pos == 1) {
         deleteAtHead(head);
         return;
     }
 
-    Node *temp = head;
-    int count = 1;
+    Node* temp = head;
+    int count  = 1;
 
-    while (temp != nullptr && count != pos)
-    {
+    while (temp != nullptr && count != pos) {
         temp = temp->next;
         count++;
     }
 
-    if(temp == nullptr) return;
-    if(temp->next != nullptr) temp->next->prev = temp->prev;
+    if (temp == nullptr) {
+        return;
+    }
+    if (temp->next != nullptr) {
+        temp->next->prev = temp->prev;
+    }
     temp->prev->next = temp->next;
     delete temp;
 }
 
-int main()
-{
-    Node *head = nullptr;
+int main() {
+    Node* head = nullptr;
     insertNodeAtTail(head, 1);
     insertNodeAtTail(head, 2);
     insertNodeAtTail(head, 3);

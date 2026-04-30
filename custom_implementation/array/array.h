@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <iterator>
+#include <stdexcept>
 
 template <typename T>
 class ArrayIterator {
@@ -67,6 +68,16 @@ public:
         return ArrayIterator(_ptr + n);
     }
 
+    ArrayIterator& operator+=(difference_type n) {
+        _ptr += n;
+        return *this;
+    }
+
+    ArrayIterator& operator-=(difference_type n) {
+        _ptr -= n;
+        return *this;
+    }
+
 private:
     pointer _ptr;
 };
@@ -79,6 +90,10 @@ public:
     using ConstIterator = ArrayIterator<const T>;
 
 public:
+    Array() = default;
+
+    Array(std::initializer_list<T>);
+
     T& operator[](size_t);
 
     const T& operator[](size_t) const;
@@ -96,17 +111,28 @@ public:
     ConstIterator end() const;
 
 private:
-    T arr[S]{};
+    T _arr[S] = {};
 };
 
 template <typename T, size_t S>
+inline Array<T, S>::Array(std::initializer_list<T> list) {
+    size_t i = 0;
+    for (const auto& it : list) {
+        if (i >= S) {
+            throw std::out_of_range("Initializer list cannot be longer than size of array defined!!");
+        }
+        _arr[i++] = it;
+    }
+}
+
+template <typename T, size_t S>
 T& Array<T, S>::operator[](size_t index) {
-    return arr[index];
+    return _arr[index];
 }
 
 template <typename T, size_t S>
 inline const T& Array<T, S>::operator[](size_t index) const {
-    return arr[index];
+    return _arr[index];
 }
 
 template <typename T, size_t S>
@@ -121,22 +147,25 @@ inline constexpr bool Array<T, S>::isEmpty() const {
 
 template <typename T, size_t S>
 inline ArrayIterator<T> Array<T, S>::begin() {
-    return Iterator(arr);
+    return Iterator(_arr);
 }
 
 template <typename T, size_t S>
 inline ArrayIterator<T> Array<T, S>::end() {
-    return Iterator(arr + S);
+    return Iterator(_arr + S);
 }
 
 template <typename T, size_t S>
 inline ArrayIterator<const T> Array<T, S>::begin() const {
-    return ConstIterator(arr);
+    return ConstIterator(_arr);
 }
 
 template <typename T, size_t S>
 inline ArrayIterator<const T> Array<T, S>::end() const {
-    return ConstIterator(arr + S);
+    return ConstIterator(_arr + S);
 }
+
+template <typename... Args>
+Array(Args...) -> Array<std::common_type_t<Args...>, sizeof...(Args)>;
 
 #endif

@@ -1,5 +1,5 @@
 class Random {
-   public:
+public:
     Random(const Random& other) = delete;
 
     static Random& Get() {
@@ -7,18 +7,22 @@ class Random {
         return instance;
     }
 
-    static float Float() { return Get().FloatImpl(); }
+    static float Float() {
+        return Get().FloatImpl();
+    }
 
-   private:
-    Random() {};
+private:
+    Random() {}
 
-    float FloatImpl() { return random_number; }
+    float FloatImpl() {
+        return random_number;
+    }
 
     float random_number = 0.5f;
 };
 
 int main() {
     Random& instance = Random::Get();
-    auto number = Random::Float();
-    auto num = instance.Float();
+    auto number      = Random::Float();
+    auto num         = instance.Float();
 }

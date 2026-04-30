@@ -1,13 +1,13 @@
 #include <string>
 
 class Person {
-   private:
+private:
     std::string inner_thought;
 
-   protected:
+protected:
     double insurance_number;
 
-   public:
+public:
     std::string name;
 };
 

@@ -1,9 +1,15 @@
 #include <iostream>
+
 struct S {
     int x;
 
-    explicit S(int x) : x(x) { std::cout << "construct S(" << x << ")\n"; }
-    S(const S& other) : x(other.x) { std::cout << "copy S(" << x << ")\n"; }
+    explicit S(int x) : x(x) {
+        std::cout << "construct S(" << x << ")\n";
+    }
+
+    S(const S& other) : x(other.x) {
+        std::cout << "copy S(" << x << ")\n";
+    }
 };
 
 S make_value(int x) {
@@ -20,10 +26,11 @@ S no_ellision(int x) {
     S s1(x);
     S s2(x);
 
-    if (x > 0)
+    if (x > 0) {
         return s1;
-    else
+    } else {
         return s2;
+    }
 }
 
 void in_values(S s) {

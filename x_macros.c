@@ -41,7 +41,7 @@ void print_event_state(EVENTS event, STATES state) {
     case arg:                           \
         printf(", State = " #arg "\n"); \
         break;
-        ALL_EVENTS
+        ALL_STATES
 #undef X
     }
 }

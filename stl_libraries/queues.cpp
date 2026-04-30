@@ -1,29 +1,25 @@
 #include <iostream>
-#include <vector>
-#include <stack>
 #include <set>
+#include <stack>
 #include <unordered_set>
+#include <vector>
 
-#define n 20
+#define n          20
 #define emptyqueue "Queue is empty\t"
 
-class QueueUsingArrays
-{
+class QueueUsingArrays {
     int arr[n];
     int front;
     int back;
 
 public:
-    QueueUsingArrays()
-    {
+    QueueUsingArrays() {
         front = -1;
-        back = -1;
+        back  = -1;
     }
 
-    void enqueue(int x)
-    {
-        if (back == n - 1)
-        {
+    void enqueue(int x) {
+        if (back == n - 1) {
             std::cout << "Queue overflow\n";
             return;
         }
@@ -31,134 +27,110 @@ public:
         back++;
         arr[back] = x;
 
-        if (front == -1)
-        {
+        if (front == -1) {
             front++;
         }
     }
 
-    void dequeue()
-    {
-        if (front == -1 || front > back)
-        {
+    void dequeue() {
+        if (front == -1 || front > back) {
             std::cout << "No element in queue\n";
         }
         front++;
     }
 
-    int peek()
-    {
-        if (front == -1 || front > back)
-        {
+    int peek() {
+        if (front == -1 || front > back) {
             std::cout << "No element in queue\n";
             return -1;
         }
         return arr[front];
     }
 
-    bool empty()
-    {
+    bool empty() {
         return front == -1 || front > back;
     }
 };
 
-class QueueUsingVectors
-{
+class QueueUsingVectors {
     std::vector<int> v;
 
 public:
-    QueueUsingVectors()
-    {
+    QueueUsingVectors() {
         v = {};
     }
 
-    void enqueue(int x)
-    {
+    void enqueue(int x) {
         v.push_back(x);
     }
 
-    void dequeue()
-    {
+    void dequeue() {
         v.erase(v.begin());
     }
 
-    bool empty()
-    {
+    bool empty() {
         return v.empty();
     }
 
-    int peek()
-    {
-        if (empty())
-        {
+    int peek() {
+        if (empty()) {
             std::cout << "No element in queue:\t";
             return -1;
-        }
-        else
+        } else {
             return *(v.begin());
+        }
     }
 };
 
-class Node
-{
+class Node {
 public:
     int data;
-    Node *next;
+    Node* next;
 
-    Node(int x)
-    {
+    Node(int x) {
         data = x;
         next = nullptr;
     }
 };
 
-class QueueUsingLinkedList
-{
-    Node *front;
-    Node *back;
+class QueueUsingLinkedList {
+    Node* front;
+    Node* back;
 
 public:
-    QueueUsingLinkedList()
-    {
+    QueueUsingLinkedList() {
         front = nullptr;
-        back = nullptr;
+        back  = nullptr;
     }
 
-    void enqueue(int x)
-    {
-        Node *node = new Node(x);
-        if (front == nullptr)
-        {
+    void enqueue(int x) {
+        Node* node = new Node(x);
+        if (front == nullptr) {
             front = node;
-            back = node;
+            back  = node;
             return;
         }
 
         back->next = node;
-        back = node;
+        back       = node;
     }
 
-    void dequeue()
-    {
-        if (front == nullptr)
-        {
+    void dequeue() {
+        if (front == nullptr) {
             std::cout << "Queue is empty\n";
             return;
         }
-        Node *todelete = front;
-        front = front->next;
+        Node* todelete = front;
+        front          = front->next;
         delete todelete;
     }
 
-    bool empty()
-    {
+    bool empty() {
         return front == nullptr;
     }
 
-    int peek()
-    {
-        if (empty())
-        {
+    int peek() {
+        if (empty()) {
             std::cout << "Queue is empty\t";
             return -1;
         }
@@ -166,28 +138,22 @@ public:
     }
 };
 
-class QueueUsingTwoStacks
-{
+class QueueUsingTwoStacks {
     std::stack<int> st1;
     std::stack<int> st2;
 
 public:
-    void push(int x)
-    {
+    void push(int x) {
         st1.push(x);
     }
 
-    int pop()
-    {
-        if (st1.empty() && st2.empty())
-        {
+    int pop() {
+        if (st1.empty() && st2.empty()) {
             std::cout << emptyqueue;
             return -1;
         }
-        if (st2.empty())
-        {
-            while (!st1.empty())
-            {
+        if (st2.empty()) {
+            while (!st1.empty()) {
                 st2.push(st1.top());
                 st1.pop();
             }
@@ -197,39 +163,34 @@ public:
         return first;
     }
 
-    int empty()
-    {
+    int empty() {
         return st1.empty() && st2.empty();
     }
 };
 
-class QueueUsingOneStack
-{
+class QueueUsingOneStack {
     std::stack<int> st;
 
 public:
-    void push(int x)
-    {
+    void push(int x) {
         st.push(x);
     }
 
-    bool empty()
-    {
+    bool empty() {
         return st.empty();
     }
 
-    int pop()
-    {
-        if (empty())
-        {
+    int pop() {
+        if (empty()) {
             std::cout << emptyqueue;
             return -1;
         }
 
         int val = st.top();
         st.pop();
-        if (st.empty())
+        if (st.empty()) {
             return val;
+        }
 
         int res = pop();
         st.push(val);
@@ -237,12 +198,10 @@ public:
     }
 };
 
-int main()
-{
+int main() {
     std::cout << "Queue using array\n";
     QueueUsingArrays qarray;
-    for (int i = 1; i <= 19; i++)
-    {
+    for (int i = 1; i <= 19; i++) {
         qarray.enqueue(i);
     }
     // for(int i = 1; i<=19;i++){

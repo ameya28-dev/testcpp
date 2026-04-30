@@ -1,30 +1,36 @@
 #include <iostream>
 using namespace std;
 
-class Example
-{
+class Example {
 private:
     string data;
 
 public:
-    Example(const string &str) : data(str) {}
+    Example(const string& str) : data(str) {}
+
     Example() {} // Default constructor
-    const string &content() const { return data; }
+
+    const string& content() const {
+        return data;
+    }
 };
 
-class Example1
-{
-    string *ptr;
+class Example1 {
+    string* ptr;
 
 public:
     Example1() : ptr(new string) {}
-    Example1(const string &ptr) : ptr(new string(ptr)) {}
-    ~Example1() { delete ptr; }
+
+    Example1(const string& ptr) : ptr(new string(ptr)) {}
+
+    ~Example1() {
+        delete ptr;
+    }
 
     // Copy constructor
     // Deep Copy is made here
     // x.content() returns a new string whose memory is allocated to members of copy objects
-    Example1(const Example1 &x) : ptr(new string(x.content())) {}
+    Example1(const Example1& x) : ptr(new string(x.content())) {}
 
     // Example1& operator= (const Example1& x){
     //     delete ptr;                     // deletes currently pointed string
@@ -34,20 +40,21 @@ public:
 
     // OR
     // since ptr is not const, reutilize the same string object
-    Example1& operator= (const Example1& x){
+    Example1& operator=(const Example1& x) {
         *ptr = x.content();
         return *this;
     }
 
     // access content
-    const string &content() const { return *ptr; }
+    const string& content() const {
+        return *ptr;
+    }
 };
 
 // Move constructor
 
 // Copy Constructor
-class MyClass
-{
+class MyClass {
 public:
     int a, b;
     string c;
@@ -57,8 +64,7 @@ public:
 // Performs a shallow copy, roughly equivalent to:
 // MyClass::MyClass (const MyClass& x) : a(x.a), b(x.b), c(x.c) {}
 
-int main()
-{
+int main() {
     Example foo;
     Example bar("BAR");
 
@@ -72,9 +78,9 @@ int main()
     Example1 bar2 = foo2;
 
     MyClass m1;
-    MyClass m2(m1);  // object initialization: copy constructor called
+    MyClass m2(m1); // object initialization: copy constructor called
     MyClass m3 = m1; // object initialization: copy constructor called
-    m1 = m2;         // already initialized: copy operator called
+    m1         = m2; // already initialized: copy operator called
 
     return 0;
 }

@@ -32,7 +32,8 @@ int main() {
     }
 
     std::cout << "\nCalling with different radixes:\n";
-    auto pair_list = {std::pair<const char*, int>{"11", 2}, {"22", 3}, {"33", 4}, {"77", 8}, {"99", 10}, {"FF", 16}, {"jJ", 20}, {"Zz", 36}};
+    auto pair_list = {std::pair<const char*, int>{"11", 2}, {"22", 3}, {"33", 4}, {"77", 8}, {"99", 10}, {"FF", 16},
+        {"jJ", 20}, {"Zz", 36}};
 
     for (const auto& [s, base] : pair_list) {
         const int i = std::stoi(s, nullptr, base);

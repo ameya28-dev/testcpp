@@ -1,6 +1,5 @@
 #include <cstddef>
 
-
 // size_t
 // #ifdef _WIN64
 // __MINGW_EXTENSION typedef unsigned __int64 size_t;
@@ -17,7 +16,7 @@
 // #endif
 
 int main() {
-    int arr[] = {1, 2, 3, 4, 5};
+    int arr[]       = {1, 2, 3, 4, 5};
     std::size_t sum = 0;
     for (size_t i = 0; i < 5; i++) {
         sum += i;

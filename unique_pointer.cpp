@@ -4,16 +4,17 @@
 
 template <class T>
 class unique_ptr {
-   public:
+public:
     unique_ptr() noexcept : unique_ptr{nullptr} {}
-    explicit unique_ptr(T *ptr) noexcept : m_ptr{ptr} {}
 
-    unique_ptr(const unique_ptr &) = delete;
-    unique_ptr &operator=(const unique_ptr &) = delete;
+    explicit unique_ptr(T* ptr) noexcept : _ptr{ptr} {}
 
-    unique_ptr(unique_ptr &&other) noexcept : m_ptr{other.release()} {}
+    unique_ptr(const unique_ptr&)            = delete;
+    unique_ptr& operator=(const unique_ptr&) = delete;
 
-    unique_ptr &operator=(unique_ptr &&other) noexcept {
+    unique_ptr(unique_ptr&& other) noexcept : _ptr{other.release()} {}
+
+    unique_ptr& operator=(unique_ptr&& other) noexcept {
         if (this != &other) {
             reset(other.release());
         }
@@ -21,60 +22,70 @@ class unique_ptr {
     }
 
     explicit operator bool() const noexcept {
-        return static_cast<bool>(m_ptr);
+        return static_cast<bool>(_ptr);
     }
 
-    T *get() const noexcept { return m_ptr; }
+    T* get() const noexcept {
+        return _ptr;
+    }
 
-    T *operator->() const noexcept { return m_ptr; }
+    T* operator->() const noexcept {
+        return _ptr;
+    }
 
-    T &operator*() const noexcept { return *m_ptr; }
+    T& operator*() const noexcept {
+        return *_ptr;
+    }
 
-    T *release() noexcept {
-        return std::exchange(m_ptr, nullptr);
+    T* release() noexcept {
+        return std::exchange(_ptr, nullptr);
         // T* old = m_ptr;
         // m_ptr = nullptr;
         // return old;
     }
 
-    void reset(T *ptr = nullptr) noexcept {
+    void reset(T* ptr = nullptr) noexcept {
         // T* old = m_ptr;
         // m_ptr = ptr;
-        T *old = std::exchange(m_ptr, ptr);
+        T* old = std::exchange(_ptr, ptr);
         if (old) {
             delete old;
         }
     }
 
     ~unique_ptr() noexcept {
-        if (m_ptr) {
-            delete m_ptr;
+        if (_ptr) {
+            delete _ptr;
         }
     }
 
-   private:
-    T *m_ptr;
+private:
+    T* _ptr;
 };
 
 template <class T, class... Args>
-unique_ptr<T> make_unique(Args &&...args) {
+unique_ptr<T> make_unique(Args&&... args) {
     return unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
 struct Person {
-   public:
-    Person(const std::string &name, int age) : name(name), age(age) {}
+public:
+    Person(const std::string& name, int age) : name(name), age(age) {}
 
-    const std::string &get_name() const { return name; }
+    const std::string& get_name() const {
+        return name;
+    }
 
-    const int get_age() const { return age; }
+    const int get_age() const {
+        return age;
+    }
 
-   private:
+private:
     std::string name;
     int age;
 };
 
-std::ostream &operator<<(std::ostream &stream, const Person &person) {
+std::ostream& operator<<(std::ostream& stream, const Person& person) {
     stream << "Person{name: " << person.get_name() << ", age: " << person.get_age() << "}";
     return stream;
 }

@@ -1,60 +1,71 @@
-#include <iostream>
-
 #include "vector.h"
-
-template <typename T>
-void PrintVector(const Vector<T>& vec) {
-    for (size_t i = 0; i < vec.GetSize(); i++) {
-        std::cout << vec[i] << '\t';
-    }
-    std::cout << "\n--------------------------\n";
-}
+#include <algorithm>
+#include <iostream>
+#include <type_traits>
+#include <vector>
 
 struct Coordinate {
     float x, y, z;
-    int* memory_block = nullptr;
-    Coordinate() : x(0.0f), y(0.0f), z(0.0f) {
-        memory_block = new int[5];
-    }
-    Coordinate(float scalar) : x(scalar), y(scalar), z(scalar) { memory_block = new int[5]; }
-    Coordinate(float x, float y, float z) : x(x), y(y), z(z) { memory_block = new int[5]; }
+    int* memoryBlock = nullptr;
 
-    Coordinate(const Coordinate& other) = delete;  //: x(other.x), y(other.y), z(other.z) { std::cout << "Copy" << std::endl; }
+    Coordinate() : x(0.0f), y(0.0f), z(0.0f) {
+        memoryBlock = new int[5];
+    }
+
+    Coordinate(float scalar) : x(scalar), y(scalar), z(scalar) {
+        memoryBlock = new int[5];
+    }
+
+    Coordinate(float x, float y, float z) : x(x), y(y), z(z) {
+        memoryBlock = new int[5];
+    }
+
+    Coordinate(const Coordinate& other) = delete;
+
+    //: x(other.x), y(other.y), z(other.z) { std::cout << "Copy" << std::endl; }
+
     Coordinate(Coordinate&& other) : x(other.x), y(other.y), z(other.z) {
-        memory_block = other.memory_block;
-        other.memory_block = nullptr;
+        memoryBlock       = other.memoryBlock;
+        other.memoryBlock = nullptr;
         std::cout << "Move" << std::endl;
     }
+
     ~Coordinate() {
-        delete[] memory_block;
+        delete[] memoryBlock;
         std::cout << "Destroyed" << std::endl;
     }
 
     Coordinate& operator=(const Coordinate& other) = delete;
-    // {
-    //     std::cout << "Copied" << std::endl;
-    //     x = other.x;
-    //     y = other.y;
-    //     z = other.z;
-    //     return *this;
-    // }
 
     Coordinate& operator=(Coordinate&& other) {
         std::cout << "Moved" << std::endl;
-        x = other.x;
-        y = other.y;
-        z = other.z;
-        memory_block = other.memory_block;
-        other.memory_block = nullptr;
+        x                 = other.x;
+        y                 = other.y;
+        z                 = other.z;
+        memoryBlock       = other.memoryBlock;
+        other.memoryBlock = nullptr;
         return *this;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Coordinate& coord) {
+        return out << '{' << coord.x << ", " << coord.y << ", " << coord.z << "}";
     }
 };
 
-void PrintVector(const Vector<Coordinate>& vec) {
-    for (size_t i = 0; i < vec.GetSize(); i++) {
-        std::cout << vec[i].x << ", " << vec[i].y << ", " << vec[i].z << '\n';
+template <typename T, typename = void>
+struct IsStreamable : std::false_type {};
+
+template <typename T>
+struct IsStreamable<T, std::void_t<decltype(std::cout << std::declval<T>())>> : std::true_type {};
+
+template <typename T>
+auto PrintVector(const Vector<T>& vec) -> std::enable_if_t<IsStreamable<T>::value, void> {
+    std::cout << "[";
+    if (!vec.IsEmpty()) {
+        std::cout << *vec.begin();
+        std::for_each(std::next(vec.begin()), vec.end(), [&](const T& t) { std::cout << ", " << t; });
     }
-    std::cout << "\n--------------------------\n";
+    std::cout << "]\n--------------------------\n";
 }
 
 int main() {
@@ -65,23 +76,22 @@ int main() {
     // PrintVector(vec);
 
     std::cout << "Index based loops\n";
-    for(size_t i = 0; i < vec.GetSize() ; i++){
+    for (size_t i = 0; i < vec.GetSize(); i++) {
         std::cout << vec[i] << '\t';
     }
     std::cout << '\n';
- 
+
     std::cout << "Range based loops\n";
-    for(std::string s : vec){
+    for (std::string s : vec) {
         std::cout << s << '\t';
     }
     std::cout << '\n';
-    
+
     std::cout << "Iterator based loops\n";
-    for(Vector<std::string>::Iterator it = vec.begin() ; it != vec.end(); it++){
+    for (Vector<std::string>::Iterator it = vec.begin(); it != vec.end(); it++) {
         std::cout << *it << '\t';
     }
     std::cout << '\n';
-
 
 
     {
@@ -101,6 +111,8 @@ int main() {
         v.EmplaceBack(6, 8, 3);
         PrintVector(v);
     }
+
+    std::vector<int> v{1, 2, 3, 4, 5};
 
     return 0;
 }

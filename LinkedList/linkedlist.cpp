@@ -1,66 +1,55 @@
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
-class Node
-{
+class Node {
 public:
-    Node *next;
+    Node* next;
     int data;
 
-    Node(int val)
-    {
+    Node(int val) {
         this->data = val;
         this->next = nullptr;
     }
 };
 
-void insertNodeAtTail(Node *&head, int val)
-{
-    Node *n = new Node(val);
+void insertNodeAtTail(Node*& head, int val) {
+    Node* n = new Node(val);
 
-    if (head == nullptr)
-    {
+    if (head == nullptr) {
         head = n;
         return;
     }
 
-    Node *temp = head;
-    while (temp->next != nullptr)
-    {
+    Node* temp = head;
+    while (temp->next != nullptr) {
         temp = temp->next;
     }
     temp->next = n;
 }
 
-void insertNodeAtHead(Node *&head, int val)
-{
-    Node *newNode = new Node(val);
+void insertNodeAtHead(Node*& head, int val) {
+    Node* newNode = new Node(val);
     // if(head == nullptr){
     //     head = newNode;
     //     return;
     // }
     newNode->next = head;
-    head = newNode;
+    head          = newNode;
 }
 
-void display(Node *head)
-{
-    Node *temp = head;
-    while (temp != nullptr)
-    {
+void display(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
         std::cout << temp->data << "->";
         temp = temp->next;
     }
     std::cout << "NULL" << '\n';
 }
 
-bool searchNode(Node *head, int key)
-{
-    Node *temp = head;
-    while (temp != nullptr)
-    {
-        if (temp->data == key)
-        {
+bool searchNode(Node* head, int key) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        if (temp->data == key) {
             return true;
         }
         temp = temp->next;
@@ -68,104 +57,89 @@ bool searchNode(Node *head, int key)
     return false;
 }
 
-void deleteNode(Node *&head, int val)
-{
-    if (head == nullptr)
-    {
+void deleteNode(Node*& head, int val) {
+    if (head == nullptr) {
         return;
     }
 
-    if (head->data == val)
-    {
+    if (head->data == val) {
         // if(head->next == nullptr){
         //     head = nullptr;
         //     return;
         // }
         // else{
-        Node *todelete = head;
-        head = head->next;
+        Node* todelete = head;
+        head           = head->next;
         delete todelete;
         return;
         // }
     }
 
-    Node *temp = head;
-    while (temp->next != nullptr && temp->next->data != val)
-    {
+    Node* temp = head;
+    while (temp->next != nullptr && temp->next->data != val) {
         temp = temp->next;
     }
-    if (temp->next != nullptr)
-    {
-        Node *todelete = temp->next;
-        temp->next = temp->next->next;
+    if (temp->next != nullptr) {
+        Node* todelete = temp->next;
+        temp->next     = temp->next->next;
         delete todelete;
     }
 }
 
-Node *reverseLinkedListIteratively(Node *head)
-{
-    Node *prevptr = nullptr;
-    Node *currptr = head;
-    Node *nextptr;
+Node* reverseLinkedListIteratively(Node* head) {
+    Node* prevptr = nullptr;
+    Node* currptr = head;
+    Node* nextptr;
 
-    while (currptr != nullptr)
-    {
-        nextptr = currptr->next;
+    while (currptr != nullptr) {
+        nextptr       = currptr->next;
         currptr->next = prevptr;
-        prevptr = currptr;
-        currptr = nextptr;
+        prevptr       = currptr;
+        currptr       = nextptr;
     }
     return prevptr;
 }
 
-Node *reverseLinkedListRecursively(Node *head)
-{
-    if (head == nullptr || head->next == nullptr)
-    {
+Node* reverseLinkedListRecursively(Node* head) {
+    if (head == nullptr || head->next == nullptr) {
         return head;
     } // Make last node as head
 
-    Node *newHead = reverseLinkedListRecursively(head->next);
+    Node* newHead = reverseLinkedListRecursively(head->next);
     // now point next of head to null and next of next of head to null
     head->next->next = head;
-    head->next = nullptr;
+    head->next       = nullptr;
     return newHead;
 }
 
-Node *reverseKNodes(Node *head, int k)
-{
-    Node *currptr = head;
-    Node *prevptr = nullptr;
-    Node *nextptr;
+Node* reverseKNodes(Node* head, int k) {
+    Node* currptr = head;
+    Node* prevptr = nullptr;
+    Node* nextptr;
     int count = 0;
 
-    while (currptr != nullptr && count < k)
-    {
-        nextptr = currptr->next;
+    while (currptr != nullptr && count < k) {
+        nextptr       = currptr->next;
         currptr->next = prevptr;
-        prevptr = currptr;
-        currptr = nextptr;
+        prevptr       = currptr;
+        currptr       = nextptr;
         count++;
     }
 
-    if (nextptr != nullptr)
-    {
+    if (nextptr != nullptr) {
         head->next = reverseKNodes(nextptr, k);
     }
 
     return prevptr;
 }
 
-void makecycle(Node *&head, int pos)
-{
-    Node *temp = head;
-    Node *startcycleposition;
+void makecycle(Node*& head, int pos) {
+    Node* temp = head;
+    Node* startcycleposition;
 
     int count = 1;
-    while (temp->next != nullptr)
-    {
-        if (count == pos)
-        {
+    while (temp->next != nullptr) {
+        if (count == pos) {
             startcycleposition = temp;
         }
         temp = temp->next;
@@ -174,48 +148,42 @@ void makecycle(Node *&head, int pos)
     temp->next = startcycleposition;
 }
 
-bool detectcycle(Node *head)
-{
+bool detectcycle(Node* head) {
     Node *fast = head, *slow = head;
 
-    while (fast != nullptr && fast->next != nullptr)
-    {
+    while (fast != nullptr && fast->next != nullptr) {
         slow = slow->next;
         fast = fast->next->next;
-        if (fast == slow)
+        if (fast == slow) {
             return true;
+        }
     }
 
     return false;
 }
 
-void removecycle(Node *&head)
-{
-    if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
-    {
+void removecycle(Node*& head) {
+    if (head == nullptr || head->next == nullptr || head->next->next == nullptr) {
         return;
     }
 
     Node *fast = head->next->next, *slow = head->next;
 
-    while (fast != slow)
-    {
+    while (fast != slow) {
         fast = fast->next->next;
         slow = slow->next;
     }
 
     fast = head;
-    while (fast->next != slow->next)
-    {
+    while (fast->next != slow->next) {
         fast = fast->next;
         slow = slow->next;
     }
     slow->next = nullptr;
 }
 
-int main()
-{
-    Node *head = nullptr;
+int main() {
+    Node* head = nullptr;
     insertNodeAtHead(head, 0);
     insertNodeAtTail(head, 1);
     insertNodeAtTail(head, 2);
@@ -231,20 +199,20 @@ int main()
     display(head);
 
     std::cout << "Reversing Linked List iteratively\n";
-    Node *iterativelyreversed = reverseLinkedListIteratively(head);
+    Node* iterativelyreversed = reverseLinkedListIteratively(head);
     // reverseLinkedListIteratively(head);
     display(iterativelyreversed);
 
     std::cout << "Reversing Linked List recursively\n";
-    Node *recursivelyreversed = reverseLinkedListRecursively(iterativelyreversed);
+    Node* recursivelyreversed = reverseLinkedListRecursively(iterativelyreversed);
     display(recursivelyreversed);
     // display(head);
 
     std::cout << "Reversing k nodes of a Linked List\n";
-    Node *knodesreversed = reverseKNodes(recursivelyreversed, 4);
+    Node* knodesreversed = reverseKNodes(recursivelyreversed, 4);
     display(knodesreversed);
 
-    Node *cyclehead = nullptr;
+    Node* cyclehead = nullptr;
     insertNodeAtTail(cyclehead, 1);
     insertNodeAtTail(cyclehead, 2);
     insertNodeAtTail(cyclehead, 3);

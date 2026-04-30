@@ -1,28 +1,26 @@
 #include <iostream>
 #include <sstream>
 
-struct product
-{
-    int weight; double price;
+struct product {
+    int weight;
+    double price;
 } apple, banana, melon;
 
 struct {
     int height;
-} person ;
+} person;
 
-
-struct movies_t
-{
-    std::string title; int year;
+struct movies_t {
+    std::string title;
+    int year;
 };
 
-void printmovie(movies_t movie){
+void printmovie(movies_t movie) {
     std::cout << movie.title;
-    std::cout << " (" << movie.year <<") \n";
+    std::cout << " (" << movie.year << ") \n";
 }
 
-
-int main(){
+int main() {
     std::string mystr;
 
     movies_t amovie;
@@ -41,7 +39,7 @@ int main(){
     // printmovie(mine);
     // std::cout << "And yours is:\n";
     // printmovie(yours);
-    
+
     std::cout << "\nYou have entered:\n";
     std::cout << pmovie->title;
     std::cout << " (" << pmovie->year << ")\n";

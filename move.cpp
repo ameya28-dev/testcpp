@@ -8,11 +8,11 @@ class Move {
     std::string name;
     int* list;
 
-   public:
+public:
     Move() = delete;
 
     Move(const std::string& name) : name(name) {
-        id = ID++;
+        id   = ID++;
         list = new int[5];
         for (int i = 0; i < 5; i++) {
             list[i] = i;
@@ -20,7 +20,7 @@ class Move {
     }
 
     Move(const Move&& other) {
-        id = other.id;
+        id   = other.id;
         name = std::move(other.name);
         list = std::move(other.list);
     }

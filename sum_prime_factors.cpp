@@ -11,7 +11,9 @@ bool is_prime(std::set<int>& primes, const int n) {
     }
     int p = 2;
     while (p * p <= n) {
-        if (n % p == 0) return false;
+        if (n % p == 0) {
+            return false;
+        }
         p++;
     }
 
@@ -32,7 +34,9 @@ bool is_prime(std::vector<int>& primes, const int n) {
     }
     int p = 2;
     while (p * p <= n) {
-        if (n % p == 0) return false;
+        if (n % p == 0) {
+            return false;
+        }
         p++;
     }
 
@@ -54,8 +58,12 @@ int main() {
 
     for (const int n : input) {
         for (int i = 2; i <= n; i++) {
-            if (n % i) continue;
-            if (!is_prime(primes, i)) continue;
+            if (n % i) {
+                continue;
+            }
+            if (!is_prime(primes, i)) {
+                continue;
+            }
         }
         std::cout << n << "\tprimes:\t" << primes << '\n';
     }
@@ -66,8 +74,12 @@ int main() {
         std::vector<int> primes;
         for (const int n : input) {
             for (int i = 2; i <= n; i++) {
-                if (n % i) continue;
-                if (!is_prime(primes, i)) continue;
+                if (n % i) {
+                    continue;
+                }
+                if (!is_prime(primes, i)) {
+                    continue;
+                }
             }
             std::cout << n << "\tprimes:\t" << primes << '\n';
         }
@@ -76,11 +88,13 @@ int main() {
     }
 
     {
-        std::function<int(int)> square = [](int x) { return x*x; };
+        std::function<int(int)> square = [](int x) { return x * x; };
         std::cout << square(10) << std::endl;
     }
 
     int sum = 0;
-    for (const int s : primes) sum += s;
+    for (const int s : primes) {
+        sum += s;
+    }
     std::cout << sum << "\n";
 }

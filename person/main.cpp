@@ -1,6 +1,6 @@
 #include "person.h"
 
-int main(){
+int main() {
     Person person = Person();
     person.print();
 

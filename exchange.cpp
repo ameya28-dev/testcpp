@@ -4,19 +4,25 @@
 #include <vector>
 
 class Stream {
-   public:
+public:
     using flags_type = int;
 
-   public:
-    flags_type flags() const { return flags_; }
+public:
+    flags_type flags() const {
+        return flags_;
+    }
 
-    flags_type flags(flags_type newf) { return std::exchange(flags_, newf); }
+    flags_type flags(flags_type newf) {
+        return std::exchange(flags_, newf);
+    }
 
-   private:
+private:
     flags_type flags_ = 0;
 };
 
-void f() { std::cout << "f()"; }
+void f() {
+    std::cout << "f()";
+}
 
 int main() {
     Stream s;

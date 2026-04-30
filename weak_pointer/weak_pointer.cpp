@@ -2,7 +2,9 @@
 #include <memory>
 
 struct Object {
-    ~Object() { std::cout << "Deleted Object\n"; }
+    ~Object() {
+        std::cout << "Deleted Object\n";
+    }
 };
 
 struct Manager {
@@ -25,10 +27,10 @@ Manager manager;
 int main() {
     {
         std::shared_ptr<Object> obj = std::make_shared<Object>();
-        manager.Obj = obj;
+        manager.Obj                 = obj;
         manager.Func();
     }
-    
+
     manager.Func();
     // std::cout << manager.Obj << std::endl;
 }

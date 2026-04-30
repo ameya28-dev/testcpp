@@ -8,10 +8,12 @@ struct Timer {
     std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
     std::chrono::duration<double> duration;
 
-    Timer() { start = std::chrono::high_resolution_clock::now(); }
+    Timer() {
+        start = std::chrono::high_resolution_clock::now();
+    }
 
     void stop() {
-        end = std::chrono::high_resolution_clock::now();
+        end      = std::chrono::high_resolution_clock::now();
         duration = end - start;
     }
 
@@ -21,14 +23,20 @@ struct Timer {
 };
 
 class Person {
-   public:
+public:
     Person() = delete;
-    Person(const char* name_, int age_) : name(name_), age(age_) {};
 
-    const std::string& get_name() const { return name; }
-    const int get_age() const { return age; }
+    Person(const char* name_, int age_) : name(name_), age(age_) {}
 
-   private:
+    const std::string& get_name() const {
+        return name;
+    }
+
+    const int get_age() const {
+        return age;
+    }
+
+private:
     std::string name;
     int age;
 };
@@ -53,7 +61,9 @@ void print_array(int* arr, int len) {
     std::cout << "{";
     for (int i = 0; i < len; i++) {
         std::cout << arr[i];
-        if (i != len - 1) std::cout << ", ";
+        if (i != len - 1) {
+            std::cout << ", ";
+        }
     }
     std::cout << "}\n";
 }
@@ -103,8 +113,9 @@ void merge_sort(int* arr, int start, int end) {
     }
 }
 
-void merge(const std::vector<int>::iterator begin, const std::vector<int>::iterator mid, const std::vector<int>::iterator end) {
-    auto left_length = std::distance(begin, mid);
+void merge(const std::vector<int>::iterator begin, const std::vector<int>::iterator mid,
+    const std::vector<int>::iterator end) {
+    auto left_length  = std::distance(begin, mid);
     auto right_length = std::distance(mid, end);
     std::vector<int> left(left_length);
     std::vector<int> right(right_length);
@@ -175,7 +186,7 @@ void benchmark_sorts() {
 }
 
 int main() {
-    int arr[] = {9, 14, 4, 6, 5, 8, 7};
+    int arr[]  = {9, 14, 4, 6, 5, 8, 7};
     int length = sizeof(arr) / sizeof(int);
     print_array(arr, length);
 
@@ -198,14 +209,17 @@ int main() {
         persons.emplace_back("Ashwin", 18);
 
         /// Sort by age
-        std::sort(persons.begin(), persons.end(), [](Person& a, Person& b) -> bool { return a.get_age() < b.get_age(); });
+        std::sort(
+            persons.begin(), persons.end(), [](Person& a, Person& b) -> bool { return a.get_age() < b.get_age(); });
 
         /// Sort by alphabetical order
         std::sort(persons.begin(), persons.end(), [](Person& a, Person& b) { return a.get_name() < b.get_name(); });
 
         /// Sort by age and then alphabetical order
         std::sort(persons.begin(), persons.end(), [](Person& a, Person& b) {
-            if (a.get_age() != b.get_age()) return a.get_age() < b.get_age();
+            if (a.get_age() != b.get_age()) {
+                return a.get_age() < b.get_age();
+            }
             return a.get_name() < b.get_name();
         });
 

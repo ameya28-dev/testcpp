@@ -4,9 +4,9 @@
 #include <set>
 #include <vector>
 
-static size_t size = 0;
+static size_t size   = 0;
 static size_t copies = 0;
-static size_t moves = 0;
+static size_t moves  = 0;
 
 void* operator new(size_t s) {
     size += s;
@@ -21,9 +21,7 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& vec) {
         return out << "{}";
     }
     out << "std::vector<" << typeid(T).name() << ">{ " << *vec.begin();
-    std::for_each(std::next(vec.begin()), vec.end(), [&out](const T& element) {
-        out << ", " << element;
-    });
+    std::for_each(std::next(vec.begin()), vec.end(), [&out](const T& element) { out << ", " << element; });
     return out << " }";
 }
 
@@ -42,7 +40,7 @@ struct entity {
         return instream << "entity{data:" << val.data << "}";
     }
 
-   private:
+private:
     int data;
 };
 
@@ -87,5 +85,7 @@ int main() {
         std::cout << *(v.data() + 1) << '\n';
         std::cout << *(v.data() + 2) << '\n';
         std::cout << *(v.data() + v.size() - 1) << '\n';
+
+        std::vector<entity>::iterator it = v.begin();
     }
 }

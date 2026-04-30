@@ -1,6 +1,6 @@
 #include <iostream>
 
-void foo() {}
+void stdArrayInitialization() {}
 
 struct Entity {
     int x, y;

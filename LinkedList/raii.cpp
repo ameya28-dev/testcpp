@@ -4,31 +4,50 @@
 
 template <typename T>
 class Node {
-   public:
+public:
     Node() = delete;
+
     Node(const T& data) : data(data), next(nullptr) {}
+
     Node(const T& data, const Node<T>* next) : data(data), next(next) {}
 
-    T get_data() { return data; }
-    const T& get_data() const { return data; }
+    T get_data() {
+        return data;
+    }
 
-    Node<T>* get_next() { return next; }
-    const Node<T>* get_next() const { return next; }
-    void set_next(Node<T>* ptr) { next = ptr; }
+    const T& get_data() const {
+        return data;
+    }
 
-   private:
+    Node<T>* get_next() {
+        return next;
+    }
+
+    const Node<T>* get_next() const {
+        return next;
+    }
+
+    void set_next(Node<T>* ptr) {
+        next = ptr;
+    }
+
+private:
     T data;
     Node<T>* next;
 };
 
 template <typename T>
 class LinkedList {
-   public:
+public:
     LinkedList() : head(nullptr), last(nullptr), length(0) {}
 
-    LinkedList(const T& data) { create_head(data); }
+    LinkedList(const T& data) {
+        create_head(data);
+    }
 
-    ~LinkedList() { clear(); }
+    ~LinkedList() {
+        clear();
+    }
 
     void insert_back(const T& data) {
         if (head == nullptr) {
@@ -50,14 +69,18 @@ class LinkedList {
         }
 
         Node<T>* ptr = head;
-        head = new Node<T>(data);
+        head         = new Node<T>(data);
         head->set_next(ptr);
         length++;
     }
 
-    std::size_t size() { return length; }
+    std::size_t size() {
+        return length;
+    }
 
-    bool empty() { return length <= 0; }
+    bool empty() {
+        return length <= 0;
+    }
 
     bool contains(const T& data) {
         Node<T>* ptr = head;
@@ -70,8 +93,7 @@ class LinkedList {
         return false;
     }
 
-    friend std::ostream& operator<<(std::ostream& instream,
-                                    const LinkedList<T>& ll) {
+    friend std::ostream& operator<<(std::ostream& instream, const LinkedList<T>& ll) {
         instream << "linked list: ";
         auto temp = ll.head;
         while (temp) {
@@ -129,12 +151,14 @@ class LinkedList {
     }
 
     void clear() {
-        if (head == nullptr) return;
+        if (head == nullptr) {
+            return;
+        }
 
         if (head->get_next() == nullptr) {
             delete head;
-            head = nullptr;
-            last = nullptr;
+            head   = nullptr;
+            last   = nullptr;
             length = 0;
             return;
         }
@@ -147,12 +171,12 @@ class LinkedList {
             curr = curr->get_next();
         }
 
-        head = nullptr;
-        last = nullptr;
+        head   = nullptr;
+        last   = nullptr;
         length = 0;
     }
 
-   private:
+private:
     Node<T>* head;
     Node<T>* last;
     std::size_t length = 0;

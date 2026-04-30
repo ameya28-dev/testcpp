@@ -1,21 +1,35 @@
 #include <iostream>
+
 struct Orange {
-    operator float() { return 5.5f; }
+    operator float() {
+        return 5.5f;
+    }
 };
 
 template <typename T>
 class ScopedPtr {
-   public:
+public:
     ScopedPtr() = default;
+
     ScopedPtr(T* ptr) : m_ptr(ptr) {}
-    ~ScopedPtr() { delete m_ptr; }
 
-    T* get() { return m_ptr; }
-    const T* get() const { return m_ptr; }
+    ~ScopedPtr() {
+        delete m_ptr;
+    }
 
-    operator bool() const { return m_ptr != nullptr; }
+    T* get() {
+        return m_ptr;
+    }
 
-   private:
+    const T* get() const {
+        return m_ptr;
+    }
+
+    operator bool() const {
+        return m_ptr != nullptr;
+    }
+
+private:
     T* m_ptr = nullptr;
 };
 
@@ -32,8 +46,8 @@ int main() {
     Orange orange;
     float v = orange;
     std::cout << v << std::endl;
-    std::cout << (float)orange << std::endl;
+    std::cout << (float) orange << std::endl;
 
     ScopedPtr<Entity> scope_ptr = new Entity();
-    Entity* entity = new Entity();
+    Entity* entity              = new Entity();
 }

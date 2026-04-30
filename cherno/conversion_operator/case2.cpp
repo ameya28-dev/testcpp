@@ -1,10 +1,16 @@
 #include <chrono>
+
 struct Timer {
-    using Clock = std::chrono::high_resolution_clock;
+    using Clock     = std::chrono::high_resolution_clock;
     using TimePoint = std::chrono::time_point<Clock>;
 
-    void start() { m_start = Clock::now(); }
-    void stop() { m_stop = Clock::now(); }
+    void start() {
+        m_start = Clock::now();
+    }
+
+    void stop() {
+        m_stop = Clock::now();
+    }
 
     double get_seconds() const {
         using namespace std::chrono;
@@ -16,9 +22,11 @@ struct Timer {
         return duration_cast<milliseconds>(m_stop - m_start).count() * 1.0f;
     }
 
-    operator double() const { return get_seconds(); }
+    operator double() const {
+        return get_seconds();
+    }
 
-   private:
+private:
     TimePoint m_start, m_stop;
 };
 

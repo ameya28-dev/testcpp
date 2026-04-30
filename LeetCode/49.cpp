@@ -1,8 +1,9 @@
-#include <vector>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <unordered_map>
-#include <sstream>
+#include <vector>
+
 // using namespace std;
 
 // class Solution {
@@ -26,10 +27,10 @@
 //     }
 // };
 
-int main(){
-    int x = 'a'+1;
+int main() {
+    int x = 'a' + 1;
     std::cout << x << '\n';
     std::cout << (char) x;
 
-   std::stringstream ss;
+    std::stringstream ss;
 }

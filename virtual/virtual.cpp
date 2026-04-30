@@ -2,27 +2,35 @@
 #include <string>
 
 class Printable {
-   public:
+public:
     virtual std::string GetClassName() = 0;
 };
 
 class Entity : public Printable {
-   public:
-    virtual std::string GetName() { return "Entity"; }
+public:
+    virtual std::string GetName() {
+        return "Entity";
+    }
 
-    std::string GetClassName() override { return "Entity"; }
+    std::string GetClassName() override {
+        return "Entity";
+    }
 };
 
 class Player : public Entity {
-   private:
+private:
     std::string m_Name;
 
-   public:
+public:
     Player(const std::string& name) : m_Name(name) {}
 
-    std::string GetName() override { return m_Name; }
+    std::string GetName() override {
+        return m_Name;
+    }
 
-    std::string GetClassName() override { return "Player"; }
+    std::string GetClassName() override {
+        return "Player";
+    }
 };
 
 void PrintName(Entity* entity) {
@@ -34,13 +42,18 @@ void Print(Printable* obj) {
 }
 
 class Base {
-   public:
-    Base() { std::cout << "Base Constructed\n"; }
-    virtual ~Base() { std::cout << "Base Destructed\n"; }
+public:
+    Base() {
+        std::cout << "Base Constructed\n";
+    }
+
+    virtual ~Base() {
+        std::cout << "Base Destructed\n";
+    }
 };
 
 class Derived : public Base {
-   public:
+public:
     Derived() {
         m_Array = new int[5];
         std::cout << "Derived Constructed\n";
@@ -51,7 +64,7 @@ class Derived : public Base {
         std::cout << "Derived Destructed\n";
     }
 
-   private:
+private:
     int* m_Array;
 };
 

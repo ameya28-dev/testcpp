@@ -1,11 +1,11 @@
 #include <string>
 
 class Person {
-   private:
+private:
     std::string name;
     int age;
 
-   public:
+public:
     Person();
     Person(std::string name, int age);
     void print();

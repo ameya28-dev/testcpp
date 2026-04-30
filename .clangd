@@ -1,0 +1,16 @@
+CompileFlags:
+    Add: [-Wall]
+
+---
+# Apply C++17 only to C++ files
+If:
+  PathMatch: [.*\.cpp, .*\.hpp, .*\.cc, .*\.hh]
+CompileFlags:
+  Add: [-std=c++17]
+
+---
+# Apply a C standard (like C11) only to C files
+If:
+  PathMatch: [.*\.c, .*\.h]
+CompileFlags:
+  Add: [-std=c17]

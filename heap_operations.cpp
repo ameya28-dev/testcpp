@@ -11,7 +11,8 @@ void print(std::string_view text, const std::vector<int>& v = {}) {
     std::cout << '\n';
 }
 
-void print(std::string_view text, bool check) {
+template <typename T>
+void print(std::string_view text, T check) {
     std::cout << text << ": ";
     std::cout << std::boolalpha << check << '\n';
 }

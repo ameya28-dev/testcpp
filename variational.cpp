@@ -11,15 +11,14 @@
 struct error {
     std::string message;
 
-    explicit error(std::string message) : message(std::move(message)) {
-    }
+    explicit error(std::string message) : message(std::move(message)) {}
 };
 
 std::tuple<std::string, int> getPerson() {
     return {"Ameya", 25};
 }
 
-std::variant<error, std::vector<std::string> > file_content(const std::string &file_name) {
+std::variant<error, std::vector<std::string>> file_content(const std::string& file_name) {
     if (!std::filesystem::exists(file_name)) {
         return error("File does not exist");
     }
@@ -55,16 +54,16 @@ std::unordered_map<int, std::string> createMap() {
     return map;
 }
 
-void display_variant(const std::variant<std::string, int> &v) {
-    if (const int *ptr = std::get_if<int>(&v)) {
+void display_variant(const std::variant<std::string, int>& v) {
+    if (const int* ptr = std::get_if<int>(&v)) {
         std::cout << "Saved as int:\t" << *ptr << '\n';
     } else {
         std::cout << "Saved as string:\t" << std::get<std::string>(v) << '\n';
     }
 }
 
-std::ostream &operator<<(std::ostream &instream, const std::vector<std::string> &vec) {
-    for (auto &s: vec) {
+std::ostream& operator<<(std::ostream& instream, const std::vector<std::string>& vec) {
+    for (auto& s : vec) {
         instream << s << '\n';
     }
     return instream;
@@ -80,7 +79,7 @@ int main() {
 
     std::cout << name << ":\t" << age << '\n';
 
-    for (const auto &[key, value]: createMap()) {
+    for (const auto& [key, value] : createMap()) {
         std::cout << "Key:\t" << key << "\tValue:\t" << value << '\n';
     }
 
@@ -90,7 +89,7 @@ int main() {
     std::cin >> file_name;
 
     const auto result = file_content(file_name);
-    if (const auto ptr = std::get_if<std::vector<std::string> >(&result)) {
+    if (const auto ptr = std::get_if<std::vector<std::string>>(&result)) {
         std::cout << *ptr << '\n';
     } else {
         std::cout << std::get<error>(result).message << '\n';

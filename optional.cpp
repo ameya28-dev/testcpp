@@ -2,7 +2,9 @@
 #include <optional>
 
 std::optional<int> divide(double a, double b) {
-    if (b == 0) return {};
+    if (b == 0) {
+        return {};
+    }
     return a / b;
 }
 

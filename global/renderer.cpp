@@ -1,9 +1,8 @@
+#include "sprite.h"
 #include <iostream>
 
-#include "sprite.h"
-
 class Renderer {
-   public:
+public:
     Renderer() {
         std::cout << &Genesis::Sprites::Grass << std::endl;
     }

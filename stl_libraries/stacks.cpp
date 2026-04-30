@@ -7,10 +7,10 @@ class Stack {
     int arr[n];
     int top;
 
-   public:
+public:
     Stack() {
         arr[n] = {};
-        top = -1;
+        top    = -1;
     }
 
     void push(int x) {
@@ -65,7 +65,7 @@ void reversesentence(std::string s) {
     std::cout << '\n';
 }
 
-void insertAtBottom(std::stack<int> &st, int topElement) {
+void insertAtBottom(std::stack<int>& st, int topElement) {
     if (st.empty()) {
         st.push(topElement);
         return;
@@ -77,8 +77,9 @@ void insertAtBottom(std::stack<int> &st, int topElement) {
 }
 
 void reverseStack(std::stack<int> st) {
-    if (st.empty())
+    if (st.empty()) {
         return;
+    }
 
     int element = st.top();
     st.pop();

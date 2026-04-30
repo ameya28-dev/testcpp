@@ -1,67 +1,89 @@
-#pragma once
+#ifndef VECTOR_H
+#define VECTOR_H
+
 #include <cstddef>
 #include <cstdlib>
+#include <iterator>
 
-template <typename Vector>
+template <typename T>
 class VectorIterator {
-   public:
-    using ValueType = typename Vector::ValueType;
-    using PointerType = ValueType*;
-    using ReferenceType = ValueType&;
+public:
+    using iterator_category = std::random_access_iterator_tag;
+    using difference_type   = std::ptrdiff_t;
+    using value_type        = T;
+    using pointer           = T*;
+    using reference         = T&;
 
-   private:
-    PointerType m_ptr;
-
-   public:
-    VectorIterator(PointerType ptr) : m_ptr(ptr) {}
+public:
+    VectorIterator(pointer ptr) : _ptr(ptr) {}
 
     VectorIterator& operator++() {
-        m_ptr++;
+        _ptr++;
         return *this;
     }
 
     VectorIterator operator++(int) {
-        VectorIterator<Vector> iterator = *this;
+        auto iterator = *this;
         ++(*this);
         return iterator;
     }
 
     VectorIterator& operator--() {
-        m_ptr--;
+        _ptr--;
         return *this;
     }
 
     VectorIterator operator--(int) {
-        VectorIterator<Vector> iterator = *this;
+        VectorIterator<T> iterator = *this;
         --(*this);
         return iterator;
     }
 
-    ReferenceType operator[](size_t index) {
-        return *(m_ptr + index);
+    reference operator[](size_t index) {
+        return *(_ptr + index);
     }
 
-    PointerType operator->() {
-        return m_ptr;
+    pointer operator->() {
+        return _ptr;
     }
 
-    ReferenceType operator*() {
-        return *m_ptr;
+    reference operator*() {
+        return *_ptr;
     }
 
     bool operator==(const VectorIterator& other) const {
-        return m_ptr == other.m_ptr;
+        return _ptr == other._ptr;
     }
 
     bool operator!=(const VectorIterator& other) const {
         return !(*this == other);
     }
+
+    VectorIterator operator+=(difference_type n) {
+        _ptr += n;
+        return *this;
+    }
+
+    VectorIterator operator-=(difference_type n) {
+        _ptr -= n;
+        return *this;
+    }
+
+private:
+    pointer _ptr;
 };
 
 template <typename T>
 class Vector {
-   public:
-    Vector();
+public:
+    using ValueType     = T;
+    using Iterator      = VectorIterator<T>;
+    using ConstIterator = VectorIterator<const T>;
+
+public:
+    Vector() {
+        _realloc(2);
+    }
 
     ~Vector();
 
@@ -73,12 +95,24 @@ class Vector {
 
     void Clear();
 
+    bool IsEmpty() const {
+        return _size == 0;
+    }
+
     Iterator begin() {
-        return Iterator(m_data);
+        return Iterator(_data);
     }
 
     Iterator end() {
-        return Iterator(m_data + m_size);
+        return Iterator(_data + _size);
+    }
+
+    ConstIterator begin() const {
+        return ConstIterator(_data);
+    }
+
+    ConstIterator end() const {
+        return ConstIterator(_data + _size);
     }
 
     template <typename... Args>
@@ -90,78 +124,70 @@ class Vector {
 
     const T& operator[](size_t) const;
 
-   public:
-    using ValueType = T;
-    using Iterator = VectorIterator<Vector<T>>;
-
-   private:
+private:
     void _realloc(size_t);
 
-    T* m_data = nullptr;
-    size_t m_size = 0;
-    size_t m_capacity = 0;
+private:
+    T* _data         = nullptr;
+    size_t _size     = 0;
+    size_t _capacity = 0;
 };
-
-template <typename T>
-inline Vector<T>::Vector() {
-    _realloc(2);
-}
 
 template <typename T>
 inline Vector<T>::~Vector() {
     Clear();
-    ::operator delete(m_data, m_capacity * sizeof(T));
+    ::operator delete(_data, _capacity * sizeof(T));
 }
 
 template <typename T>
 inline void Vector<T>::PushBack(const T& value) {
-    if (m_size >= m_capacity) {
-        _realloc(m_capacity + m_capacity / 2);
+    if (_size >= _capacity) {
+        _realloc(_capacity + _capacity / 2);
     }
 
-    m_data[m_size] = value;
-    m_size++;
+    _data[_size] = value;
+    _size++;
 }
 
 template <typename T>
 inline void Vector<T>::PushBack(T&& value) {
-    if (m_size >= m_capacity) {
-        _realloc(m_capacity + m_capacity / 2);
+    if (_size >= _capacity) {
+        _realloc(_capacity + _capacity / 2);
     }
 
-    m_data[m_size] = std::move(value);
-    m_size++;
+    _data[_size] = std::move(value);
+    _size++;
 }
 
 template <typename T>
 inline void Vector<T>::PopBack() {
-    if (m_size > 0) {
-        m_size--;
-        m_data[m_size].~T();
+    if (_size > 0) {
+        _size--;
+        _data[_size].~T();
     }
 }
 
 template <typename T>
 inline void Vector<T>::Clear() {
-    for (size_t i = 0; i < m_size; i++) {
-        m_data[i].~T();
+    for (size_t i = 0; i < _size; i++) {
+        _data[i].~T();
     }
-    m_size = 0;
+    _size = 0;
 }
 
 template <typename T>
 inline size_t Vector<T>::GetSize() const {
-    return m_size;
+    return _size;
 }
 
 template <typename T>
 inline T& Vector<T>::operator[](size_t index) {
-    return m_data[index];
+    return _data[index];
 }
 
 template <typename T>
 inline const T& Vector<T>::operator[](size_t index) const {
-    return m_data[index];
+    return _data[index];
 }
 
 template <typename T>
@@ -170,34 +196,36 @@ inline void Vector<T>::_realloc(size_t new_capacity) {
     // 2. copy/move old elements into new block
     // 3. delete
 
-    T* new_block = (T*)::operator new(new_capacity * sizeof(T));
+    T* new_block = (T*) ::operator new(new_capacity * sizeof(T));
 
-    if (new_capacity < m_size) {
-        m_size = new_capacity;
+    if (new_capacity < _size) {
+        _size = new_capacity;
     }
 
-    for (size_t i = 0; i < m_size; i++) {
-        new (&new_block[i]) T(std::move(m_data[i]));
+    for (size_t i = 0; i < _size; i++) {
+        new (&new_block[i]) T(std::move(_data[i]));
     }
 
-    for (size_t i = 0; i < m_size; i++) {
-        m_data[i].~T();
+    for (size_t i = 0; i < _size; i++) {
+        _data[i].~T();
     }
 
-    ::operator delete(m_data, m_capacity * sizeof(T));
-    m_data = new_block;
-    m_capacity = new_capacity;
+    ::operator delete(_data, _capacity * sizeof(T));
+    _data     = new_block;
+    _capacity = new_capacity;
 }
 
 template <typename T>
 template <typename... Args>
 inline T& Vector<T>::EmplaceBack(Args&&... args) {
-    if (m_size >= m_capacity) {
-        _realloc(m_capacity + m_capacity / 2);
+    if (_size >= _capacity) {
+        _realloc(_capacity + _capacity / 2);
     }
 
-    new (&m_data[m_size]) T(std::forward<Args>(args)...);
+    new (&_data[_size]) T(std::forward<Args>(args)...);
 
-    // m_data[m_size] = T(std::forward<Args>(args)...);
-    return m_data[m_size++];
+    // _data[_size] = T(std::forward<Args>(args)...);
+    return _data[_size++];
 }
+
+#endif

@@ -1,7 +1,7 @@
 #include <iostream>
 
 class Log {
-   public:
+public:
     inline static int x = 15;
 };
 

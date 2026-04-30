@@ -4,15 +4,21 @@
 #include <iostream>
 #include <vector>
 
-#define LIST {8, 7, 5, 9, 0, 1, 3, 2, 6, 4, 10, 12, 11, 16, 14, 15, 20, 19, 18, 17, 21, 22, 16, 23, 24, 25, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 36, 37, 38, 29, 40}
+#define LIST                                                                                                           \
+    {8, 7, 5, 9, 0, 1, 3, 2, 6, 4, 10, 12, 11, 16, 14, 15, 20, 19, 18, 17, 21, 22, 16, 23, 24, 25, 35, 34, 33, 32, 31, \
+        30, 29, 28, 27, 26, 36, 37, 38, 29, 40}
 
 std::ostream& operator<<(std::ostream& ostr, const std::forward_list<int>& list) {
-    for (auto& i : list) ostr << i << '\t';
+    for (auto& i : list) {
+        ostr << i << '\t';
+    }
     return ostr;
 }
 
 std::ostream& operator<<(std::ostream& ostr, const std::vector<int>& list) {
-    for (auto& i : list) ostr << i << '\t';
+    for (auto& i : list) {
+        ostr << i << '\t';
+    }
     return ostr;
 }
 
@@ -50,7 +56,7 @@ struct Timer {
     }
 
     ~Timer() {
-        end = std::chrono::high_resolution_clock::now();
+        end      = std::chrono::high_resolution_clock::now();
         duration = end - start;
         std::cout << "Duration in micro seconds:\t" << duration.count() * 1000000 << std::endl;
     }

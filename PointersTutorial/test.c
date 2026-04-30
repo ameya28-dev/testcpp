@@ -2,12 +2,16 @@
 
 double expansion(double x, int n) {
     double curr = 1, prev = 0;
-    if (n < 0) return prev;
-    if (n == 0) return curr;
+    if (n < 0) {
+        return prev;
+    }
+    if (n == 0) {
+        return curr;
+    }
     for (int i = 1; i <= n; i++) {
         double temp = (1 + x / i) * curr - (x / i) * prev;
-        prev = curr;
-        curr = temp;
+        prev        = curr;
+        curr        = temp;
     }
 
     return curr;
@@ -47,7 +51,6 @@ int harshad_check(int n) {
         return sum(n);
     }
 }
-
 
 int main() {
     printf("%f\n", expansion(1, 10000000));
