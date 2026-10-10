@@ -7,6 +7,45 @@
 #include <vector>
 
 template <typename T>
+std::ostream& operator<<(std::ostream& out, const std::vector<T>& vec) {
+    out << "[";
+    if (!vec.empty()) {
+        out << *vec.cbegin();
+        for (auto it = vec.cbegin() + 1; it != vec.cend(); ++it) {
+            out << ", " << *it;
+        }
+    }
+    return out << "]";
+}
+
+template <typename T, typename Container = std::vector<T>, typename Compare = std::less<typename Container::value_type>>
+class PriorityQueue : protected std::priority_queue<T, Container, Compare> {
+public:
+    using Base = std::priority_queue<T, Container, Compare>;
+
+public:
+    using Base::Base;
+
+    using Base::emplace, Base::empty, Base::pop, Base::push, Base::size, Base::top;
+
+    const Container& get() const {
+        return this->c;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const PriorityQueue& pq) {
+        if constexpr (std::is_same_v<Container, std::vector<T>>) {
+            return out << pq.c;
+        }
+
+        return out;
+    }
+
+    friend void println(std::string_view rem, const PriorityQueue& pq) {
+        std::cout << rem << ": " << pq << '\n';
+    }
+};
+
+template <typename T>
 void println(std::string_view rem, const T& v) {
     std::cout << rem << ": ";
     for (const auto& e : v) {
@@ -76,4 +115,11 @@ int main() {
     pop_println("lambda priority queue: ", lambda_priority_queue);
 
     VPriorityQueue<int, std::less<int>> vq(data.begin(), data.end());
+
+    PriorityQueue<int> pq(data.begin(), data.end());
+    println("pq", pq);
+    pq.pop();
+    println("pq after pop", pq);
+    pq.push(4);
+    println("pq after push", pq);
 }

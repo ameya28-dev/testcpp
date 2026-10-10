@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <forward_list>
@@ -6,10 +7,11 @@
 #include <iostream>
 #include <random>
 #include <set>
-#include <thread>
+#include <string>
 #include <unordered_map>
 #include <variant>
 #include <vector>
+
 
 #define WAIT   std::cin.get()
 #define LOG(x) std::cout << x << std::endl

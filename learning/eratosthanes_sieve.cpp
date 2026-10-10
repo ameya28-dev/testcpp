@@ -1,29 +1,30 @@
 #include <chrono>
+#include <cstddef>
 #include <iostream>
 #include <vector>
 
 struct Timer {
-    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-    std::chrono::duration<double> duration;
-
-    Timer();
+    Timer(const char* title);
     ~Timer();
+
+    const char* title;
+    const std::chrono::time_point<std::chrono::steady_clock> start;
 };
 
-Timer::Timer() {
-    start = std::chrono::high_resolution_clock::now();
-}
+Timer::Timer(const char* title) : title(title), start(std::chrono::steady_clock::now()) {}
 
 Timer::~Timer() {
-    end      = std::chrono::high_resolution_clock::now();
-    duration = end - start;
+    auto end      = std::chrono::steady_clock::now();
+    auto duration = end - start;
 
-    std::cout << "Timer took " << duration.count() * 1000.0 << "ms" << std::endl;
+    std::cout << "(" << title << ") Timer took "
+              << std::chrono::duration_cast<std::chrono::microseconds>(duration).count() << " microseconds" << '\n';
 }
 
 std::vector<int> primes(const size_t n) {
-    Timer t;
-    std::vector<int> res{};
+    Timer t{"Primes"};
+    std::vector<int> res;
+    res.reserve(n / 2);
 
     std::vector<bool> sieve(n + 1, true);
 
@@ -49,14 +50,15 @@ std::vector<int> primes(const size_t n) {
 }
 
 void print(const std::vector<int>& vec) {
-    Timer t;
+    Timer t{"print"};
     for (int v : vec) {
         std::cout << v << "\t";
     }
+    std::cout << '\n';
 }
 
 float pi(int n) {
-    Timer t;
+    Timer t{"pi"};
     float sum = 0;
     int sign  = 1;
     // printf("sum: %f\t", sum);
@@ -72,7 +74,9 @@ float pi(int n) {
 }
 
 int main() {
-    // std::vector<int> res = primes(1000000);
+    auto limit           = 1e7;
+    std::vector<int> res = primes(limit);
+    std::cout << "Number of primes below " << limit << " is: " << res.size() << '\n';
     // print(res);
 
     std::cout << pi(100000);

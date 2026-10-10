@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <cmath>
-#include <exception>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -16,7 +15,7 @@ struct complex {
     double real, imag;
 
     const double magnitude() const {
-        return sqrt(real * real + imag * imag);
+        return std::sqrt(real * real + imag * imag);
     }
 
     bool is_zero() const {

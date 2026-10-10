@@ -15,7 +15,6 @@ public:
                 res[index] = nums[left] * nums[left];
                 left++;
             }
-
             index--;
         }
 
@@ -35,10 +34,8 @@ public:
                 *index = std::pow(*left, 2);
                 left++;
             }
-
             index--;
         }
-
 
         return res;
     }

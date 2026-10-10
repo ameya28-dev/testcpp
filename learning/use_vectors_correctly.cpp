@@ -1,6 +1,7 @@
 #include <algorithm>
+#include <array>
+#include <cstdlib>
 #include <iostream>
-#include <print>
 #include <set>
 #include <vector>
 
@@ -25,18 +26,18 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& vec) {
     return out << " }";
 }
 
-struct entity {
-    entity(int val) : data(val) {}
+struct Entity {
+    Entity(int val) : data(val) {}
 
-    entity(const entity& val) : data(val.data) {
+    Entity(const Entity& val) : data(val.data) {
         copies++;
     }
 
-    entity(const entity&& val) : data(val.data) {
+    Entity(const Entity&& val) : data(val.data) {
         moves++;
     }
 
-    friend std::ostream& operator<<(std::ostream& instream, const entity& val) {
+    friend std::ostream& operator<<(std::ostream& instream, const Entity& val) {
         return instream << "entity{data:" << val.data << "}";
     }
 
@@ -69,7 +70,7 @@ int main() {
     {
         size = 0;
 
-        std::vector<entity> v;
+        std::vector<Entity> v;
         v.reserve(3);
 
         v.emplace_back(1);
@@ -86,6 +87,18 @@ int main() {
         std::cout << *(v.data() + 2) << '\n';
         std::cout << *(v.data() + v.size() - 1) << '\n';
 
-        std::vector<entity>::iterator it = v.begin();
+        std::vector<Entity>::iterator it = v.begin();
+    }
+
+    {
+        struct Person {
+            std::string name;
+            int age;
+            char grade;
+        };
+
+        std::vector<Person> p1   = {{"James", 'A', 24}, {"Jenny", 'B', 30}, {"Heather", 'S', 54}};
+        Person p2[]              = {"James", 'A', 24, "Jenny", 'B', 30, "Heather", 'S', 54};
+        std::array<Person, 3> p3 = {"James", 'A', 24, "Jenny", 'B', 30, "Heather", 'S', 54};
     }
 }

@@ -1,8 +1,9 @@
-#include "vector.h"
 #include <algorithm>
 #include <iostream>
 #include <type_traits>
 #include <vector>
+
+#include "vector.hpp"
 
 struct Coordinate {
     float x, y, z;
@@ -68,6 +69,17 @@ auto PrintVector(const Vector<T>& vec) -> std::enable_if_t<IsStreamable<T>::valu
     std::cout << "]\n--------------------------\n";
 }
 
+void foo() {
+    std::vector<int> v{1, 2, 4, 3, 5, 6, 7, 7, 8, 8, 8};
+    std::sort(v.begin(), v.end());
+    auto it = std::unique(v.begin(), v.end());
+    v.erase(it, v.end());
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        std::cout << *it << '\t';
+    }
+    std::cout << '\n';
+}
+
 int main() {
     Vector<std::string> vec;
     vec.EmplaceBack("Ameya");
@@ -82,13 +94,19 @@ int main() {
     std::cout << '\n';
 
     std::cout << "Range based loops\n";
-    for (std::string s : vec) {
+    for (auto& s : vec) {
         std::cout << s << '\t';
     }
     std::cout << '\n';
 
     std::cout << "Iterator based loops\n";
-    for (Vector<std::string>::Iterator it = vec.begin(); it != vec.end(); it++) {
+    for (Vector<std::string>::Iterator it = vec.begin(); it != vec.end(); ++it) {
+        std::cout << *it << '\t';
+    }
+    std::cout << '\n';
+
+    std::cout << "Iterator based loops (reverse)\n";
+    for (auto it = vec.rbegin(); it != vec.rend(); ++it) {
         std::cout << *it << '\t';
     }
     std::cout << '\n';
@@ -113,6 +131,12 @@ int main() {
     }
 
     std::vector<int> v{1, 2, 3, 4, 5};
+    for (auto it = v.rbegin(); it != v.rend(); ++it) {
+        std::cout << *it << '\t';
+    }
+    std::cout << '\n';
+
+    foo();
 
     return 0;
 }

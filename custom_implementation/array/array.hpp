@@ -85,9 +85,11 @@ private:
 template <typename T, size_t S>
 class Array {
 public:
-    using ValueType     = T;
-    using Iterator      = ArrayIterator<T>;
-    using ConstIterator = ArrayIterator<const T>;
+    using ValueType            = T;
+    using Iterator             = ArrayIterator<T>;
+    using ConstIterator        = ArrayIterator<const T>;
+    using ReverseIterator      = std::reverse_iterator<Iterator>;
+    using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
 
 public:
     Array() = default;
@@ -103,12 +105,16 @@ public:
     constexpr bool isEmpty() const;
 
     Iterator begin();
-
     Iterator end();
 
-    ConstIterator begin() const;
+    ConstIterator cbegin() const;
+    ConstIterator cend() const;
 
-    ConstIterator end() const;
+    ReverseIterator rbegin();
+    ReverseIterator rend();
+
+    ConstReverseIterator crbegin();
+    ConstReverseIterator crend();
 
 private:
     T _arr[S] = {};
@@ -156,13 +162,33 @@ inline ArrayIterator<T> Array<T, S>::end() {
 }
 
 template <typename T, size_t S>
-inline ArrayIterator<const T> Array<T, S>::begin() const {
+inline ArrayIterator<const T> Array<T, S>::cbegin() const {
     return ConstIterator(_arr);
 }
 
 template <typename T, size_t S>
-inline ArrayIterator<const T> Array<T, S>::end() const {
+inline ArrayIterator<const T> Array<T, S>::cend() const {
     return ConstIterator(_arr + S);
+}
+
+template <typename T, size_t S>
+inline std::reverse_iterator<ArrayIterator<T>> Array<T, S>::rbegin() {
+    return ReverseIterator(end());
+}
+
+template <typename T, size_t S>
+inline std::reverse_iterator<ArrayIterator<T>> Array<T, S>::rend() {
+    return ReverseIterator(begin());
+}
+
+template <typename T, size_t S>
+inline std::reverse_iterator<ArrayIterator<const T>> Array<T, S>::crbegin() {
+    return ReverseIterator(end());
+}
+
+template <typename T, size_t S>
+inline std::reverse_iterator<ArrayIterator<const T>> Array<T, S>::crend() {
+    return ReverseIterator(begin());
 }
 
 template <typename... Args>

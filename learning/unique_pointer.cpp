@@ -1,4 +1,6 @@
+#include <cstdlib>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -90,11 +92,45 @@ std::ostream& operator<<(std::ostream& stream, const Person& person) {
     return stream;
 }
 
+template <typename T>
+void printUnique(std::unique_ptr<T> ptr) {
+    std::cout << sizeof(ptr) << '\n';
+}
+
 int main() {
     auto ptr = make_unique<Person>("Ameya", 25);
     std::cout << "Name: " << ptr->get_name() << std::endl;
     std::cout << "Age: " << ptr->get_age() << std::endl;
     std::cout << *ptr.get() << std::endl;
+
+    auto u    = std::make_unique<int>(4);
+    auto& ref = u;
+    std::cout << u.get() << '\t' << *u << '\n';
+    std::cout << ref.get() << '\t' << *ref << '\n';
+
+    struct S {
+        int a;
+        float b;
+
+        S(int a, float b) : a(a), b(b) {}
+    };
+
+    auto v = std::make_unique<S>(3, 4.0f);
+    printUnique(std::move(v));
+    // std::cout << v->a << '\t' << v->b << '\n';
+    {
+        struct FreeDeleter {
+            void operator()(int* ptr) {
+                free(ptr);
+            }
+        };
+
+        using Allocater    = std::unique_ptr<int, FreeDeleter>;
+        auto makeAllocater = [](int size = 1) { return Allocater{static_cast<int*>(malloc(sizeof(int) * size))}; };
+        auto alloc         = makeAllocater();
+        *alloc = 1;
+        std::cout << *alloc << '\n';
+    }
 
     return 0;
 }
